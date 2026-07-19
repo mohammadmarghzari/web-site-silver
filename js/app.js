@@ -107,13 +107,13 @@
     const w = canvas.width, h = canvas.height;
     ctx.clearRect(0, 0, w, h);
 
-    // پس‌زمینه و نور محیطی
-    ctx.fillStyle = "#0D0C0B";
+    // پس‌زمینه و نور محیطی زمردی
+    ctx.fillStyle = "#060B0A";
     ctx.fillRect(0, 0, w, h);
     const gx = w * (0.5 + 0.08 * Math.sin(t * Math.PI * 2));
     const glow = ctx.createRadialGradient(gx, h * 0.42, 0, gx, h * 0.42, Math.max(w, h) * 0.5);
-    glow.addColorStop(0, "rgba(201,204,209,0.10)");
-    glow.addColorStop(0.5, "rgba(185,168,140,0.035)");
+    glow.addColorStop(0, "rgba(49,229,165,0.10)");
+    glow.addColorStop(0.5, "rgba(201,204,209,0.03)");
     glow.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = glow;
     ctx.fillRect(0, 0, w, h);
@@ -198,7 +198,7 @@
     // وینیت
     const vig = ctx.createRadialGradient(cx, cy, Math.min(w, h) * 0.35, cx, cy, Math.max(w, h) * 0.75);
     vig.addColorStop(0, "rgba(0,0,0,0)");
-    vig.addColorStop(1, "rgba(6,5,4,0.55)");
+    vig.addColorStop(1, "rgba(3,8,6,0.55)");
     ctx.fillStyle = vig;
     ctx.fillRect(0, 0, w, h);
   }
@@ -228,9 +228,10 @@
   /* ---------- انیمیشن ورود هیرو ---------- */
   function introReveal() {
     if (reduceMotion) return;
-    gsap.from(".hero-label, .hero-heading .word, .hero-tagline, .scroll-indicator", {
-      y: 46, opacity: 0, duration: 1.05, stagger: 0.09, ease: "power3.out", delay: 0.15
+    gsap.from(".hero-label, .hero-heading .word, .hero-tagline, .hero-cta, .scroll-indicator", {
+      y: 46, opacity: 0, duration: 1.05, stagger: 0.07, ease: "power3.out", delay: 0.15
     });
+    gsap.from(".hero-stage", { opacity: 0, y: 60, duration: 1.6, ease: "power2.out", delay: 0.5 });
   }
 
   /* ---------- بخش‌های اسکرولی ---------- */

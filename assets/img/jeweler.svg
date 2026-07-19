@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-label="سیلوئت نقره‌ساز با حلقه درخشان">
+  <defs>
+    <linearGradient id="j-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0B1411"/>
+      <stop offset="1" stop-color="#050A08"/>
+    </linearGradient>
+    <radialGradient id="j-halo" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#31E5A5" stop-opacity=".5"/>
+      <stop offset=".55" stop-color="#31E5A5" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#31E5A5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="j-ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9FA6AF"/>
+      <stop offset=".5" stop-color="#F4F7F9"/>
+      <stop offset="1" stop-color="#8E9196"/>
+    </linearGradient>
+    <linearGradient id="j-rim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#31E5A5" stop-opacity="0"/>
+      <stop offset="1" stop-color="#31E5A5" stop-opacity=".55"/>
+    </linearGradient>
+    <filter id="j-blur" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+  </defs>
+
+  <!-- هاله پشت پیکر -->
+  <ellipse cx="450" cy="330" rx="330" ry="240" fill="url(#j-halo)" opacity=".55"/>
+
+  <!-- حلقه درخشان بالای دست -->
+  <g>
+    <circle cx="588" cy="128" r="46" fill="none" stroke="#31E5A5" stroke-width="10" opacity=".55" filter="url(#j-blur)"/>
+    <circle cx="588" cy="128" r="42" fill="none" stroke="url(#j-ring)" stroke-width="9"/>
+    <circle cx="588" cy="128" r="42" fill="none" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="3" stroke-dasharray="26 238"/>
+    <path d="M588 64 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5 z" fill="#D9FFEF" opacity=".9"/>
+  </g>
+
+  <!-- پیکر از پشت: سر، شانه‌ها، دست راست بالا -->
+  <g fill="url(#j-body)">
+    <circle cx="450" cy="180" r="58"/>
+    <path d="M450 216
+             C 380 216 320 260 300 330
+             L 268 560 L 632 560 L 600 330
+             C 588 288 566 258 536 240
+             L 560 200
+             C 566 190 572 178 576 166
+             L 588 174
+             L 604 146
+             L 574 120
+             C 560 128 548 142 540 158
+             L 512 214
+             C 493 215 471 216 450 216 Z"/>
+  </g>
+
+  <!-- نور لبه زمردی سمت دست -->
+  <path d="M576 166 L588 174 L604 146 L590 134"
+        fill="none" stroke="url(#j-rim)" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+  <path d="M536 240 C 566 258 588 288 600 330 L 614 430"
+        fill="none" stroke="url(#j-rim)" stroke-width="3" stroke-linecap="round" opacity=".45"/>
+  <path d="M450 122 C 470 122 488 132 499 148"
+        fill="none" stroke="url(#j-rim)" stroke-width="3" stroke-linecap="round" opacity=".4"/>
+
+  <!-- محو شدن پایین -->
+  <rect x="0" y="470" width="900" height="90" fill="url(#j-fade)"/>
+  <linearGradient id="j-fade" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#04110C" stop-opacity="0"/>
+    <stop offset="1" stop-color="#04110C" stop-opacity=".95"/>
+  </linearGradient>
+</svg>
