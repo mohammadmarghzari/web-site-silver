@@ -24,6 +24,7 @@
   const toFa = (n) => String(n).replace(/\d/g, (d) => FA_DIGITS[d]);
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
   const lerp = (a, b, t) => a + (b - a) * t;
+  const smoothstep = (t) => t * t * (3 - 2 * t);
 
   /* ---------- Lenis ---------- */
   const lenis = new Lenis({
@@ -266,13 +267,12 @@
       default: // fade-up
         tl.from(children, { y: 50, opacity: 0, stagger: 0.11, duration: 0.9, ease: "power3.out" });
     }
-    if (reduceMotion) tl.timeScale(100);
     return {
       el, tl,
       enter, leave,
       persist: el.dataset.persist === "true",
       isStats: el.classList.contains("section-stats"),
-      played: false
+      lastR: -1
     };
   });
 
@@ -347,18 +347,24 @@
         requestAnimationFrame(drawCurrent);
       }
 
-      // بخش‌ها
+      // بخش‌ها — ورود و خروج کاملاً اسکراب‌شده با اسکرول (نرم و تدریجی)
       for (const s of sectionData) {
-        const inRange = p >= s.enter && p <= s.leave;
-        const active = inRange || (s.persist && p > s.enter);
-        s.el.classList.toggle("is-active", active);
-        if (active) {
-          if (!s.played) { s.tl.play(); s.played = true; }
-          else if (s.tl.reversed()) s.tl.play();
-          if (s.isStats) runCounters();
-        } else if (s.played && !s.persist && !s.tl.reversed()) {
-          s.tl.reverse();
+        let local = (p - s.enter) / (s.leave - s.enter);
+        if (s.persist && local > 1) local = 1;
+        const visible = local > -0.02 && local < 1.05;
+        s.el.classList.toggle("is-active", visible);
+        if (!visible) {
+          if (s.lastR !== 0 && local < 0) { s.tl.progress(0); s.lastR = 0; }
+          continue;
         }
+        // ورود: در ۴۵٪ ابتدای بازه به‌تدریج کامل می‌شود
+        const r = smoothstep(clamp01(local / 0.45));
+        // خروج: در ۱۴٪ انتهای بازه به‌نرمی محو می‌شود (مگر بخش ماندگار)
+        const e = s.persist ? 1 : 1 - smoothstep(clamp01((local - 0.86) / 0.14));
+        s.tl.progress(reduceMotion ? (r > 0 ? 1 : 0) : r);
+        s.el.style.opacity = e.toFixed(3);
+        s.lastR = r;
+        if (s.isStats && r > 0.6) runCounters();
       }
 
       // روکش تیره
@@ -420,6 +426,13 @@
     if (msg) lines.push(msg);
     const url = "https://wa.me/989923166200?text=" + encodeURIComponent(lines.join("\n"));
     window.open(url, "_blank", "noopener");
+  });
+
+  /* ---------- فید نرم عکس‌های محصول پس از لود ---------- */
+  document.querySelectorAll(".product-figure img").forEach((img) => {
+    const done = () => img.classList.add("img-loaded");
+    if (img.complete && img.naturalWidth) done();
+    else img.addEventListener("load", done);
   });
 
   /* ---------- شروع ---------- */
