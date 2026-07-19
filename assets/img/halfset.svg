@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="نیم‌ست زنانه نقره">
+  <defs>
+    <linearGradient id="h-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#96999E"/>
+      <stop offset=".5" stop-color="#ECEFF2"/>
+      <stop offset="1" stop-color="#75787D"/>
+    </linearGradient>
+    <linearGradient id="h-gem" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#9FA6AF"/>
+    </linearGradient>
+    <radialGradient id="h-glow" cx=".5" cy=".4" r=".7">
+      <stop offset="0" stop-color="#C9CCD1" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#C9CCD1" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="#131110"/>
+  <rect width="800" height="800" fill="url(#h-glow)"/>
+  <path d="M160 150 C 220 360 320 430 400 430 C 480 430 580 360 640 150"
+        fill="none" stroke="url(#h-metal)" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="252" cy="306" r="5" fill="#ECEFF2"/>
+  <circle cx="330" cy="382" r="5" fill="#ECEFF2"/>
+  <circle cx="470" cy="382" r="5" fill="#ECEFF2"/>
+  <circle cx="548" cy="306" r="5" fill="#ECEFF2"/>
+  <g transform="translate(400 470)">
+    <path d="M0 -34 L30 0 L0 58 L-30 0 Z" fill="url(#h-gem)"/>
+    <path d="M0 -34 L30 0 L0 10 Z" fill="#FFFFFF" opacity=".6"/>
+    <path d="M-30 0 L0 10 L0 58 Z" fill="#878E96" opacity=".55"/>
+  </g>
+  <g transform="translate(240 640)">
+    <path d="M0 -46 C 16 -46 22 -30 12 -20 L0 -10 L-12 -20 C -22 -30 -16 -46 0 -46 Z" fill="none" stroke="url(#h-metal)" stroke-width="7"/>
+    <path d="M0 -8 L13 8 L0 34 L-13 8 Z" fill="url(#h-gem)"/>
+  </g>
+  <g transform="translate(560 640)">
+    <path d="M0 -46 C 16 -46 22 -30 12 -20 L0 -10 L-12 -20 C -22 -30 -16 -46 0 -46 Z" fill="none" stroke="url(#h-metal)" stroke-width="7"/>
+    <path d="M0 -8 L13 8 L0 34 L-13 8 Z" fill="url(#h-gem)"/>
+  </g>
+  <path d="M652 520 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 z" fill="#E8EBEF" opacity=".6"/>
+  <path d="M150 500 l3.5 9 9 3.5 -9 3.5 -3.5 9 -3.5 -9 -9 -3.5 9 -3.5 z" fill="#C9CCD1" opacity=".5"/>
+</svg>

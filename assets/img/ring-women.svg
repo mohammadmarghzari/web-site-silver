@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="انگشتر زنانه نقره">
+  <defs>
+    <linearGradient id="w-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9A9DA2"/>
+      <stop offset=".5" stop-color="#F0F2F5"/>
+      <stop offset="1" stop-color="#7C7F84"/>
+    </linearGradient>
+    <linearGradient id="w-gem" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".5" stop-color="#D9DEE5"/>
+      <stop offset="1" stop-color="#9FA6AF"/>
+    </linearGradient>
+    <radialGradient id="w-glow" cx=".5" cy=".38" r=".65">
+      <stop offset="0" stop-color="#C9CCD1" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#C9CCD1" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="#131110"/>
+  <rect width="800" height="800" fill="url(#w-glow)"/>
+  <ellipse cx="400" cy="480" rx="168" ry="185" fill="none" stroke="url(#w-metal)" stroke-width="26"/>
+  <ellipse cx="400" cy="480" rx="168" ry="185" fill="none" stroke="#FFFFFF" stroke-opacity=".22" stroke-width="5" stroke-dasharray="48 620"/>
+  <g transform="translate(400 268)">
+    <path d="M0 -74 L44 -22 L27 34 L-27 34 L-44 -22 Z" fill="url(#w-gem)"/>
+    <path d="M0 -74 L44 -22 L0 -6 Z" fill="#FFFFFF" opacity=".55"/>
+    <path d="M-44 -22 L0 -6 L-27 34 Z" fill="#8B9199" opacity=".5"/>
+    <path d="M27 34 L0 -6 L44 -22 Z" fill="#AEB5BD" opacity=".6"/>
+  </g>
+  <path d="M400 160 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5 z" fill="#FFFFFF" opacity=".9"/>
+  <path d="M580 420 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 z" fill="#E8EBEF" opacity=".6"/>
+  <path d="M212 340 l3.5 9 9 3.5 -9 3.5 -3.5 9 -3.5 -9 -9 -3.5 9 -3.5 z" fill="#C9CCD1" opacity=".5"/>
+</svg>

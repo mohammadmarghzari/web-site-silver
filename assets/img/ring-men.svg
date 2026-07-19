@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="انگشتر مردانه نقره">
+  <defs>
+    <linearGradient id="m-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8E9196"/>
+      <stop offset=".45" stop-color="#E8EBEF"/>
+      <stop offset=".6" stop-color="#AEB3B9"/>
+      <stop offset="1" stop-color="#6E7175"/>
+    </linearGradient>
+    <linearGradient id="m-stone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2A2A2E"/>
+      <stop offset="1" stop-color="#0B0B0D"/>
+    </linearGradient>
+    <radialGradient id="m-glow" cx=".5" cy=".42" r=".65">
+      <stop offset="0" stop-color="#C9CCD1" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#C9CCD1" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="#131110"/>
+  <rect width="800" height="800" fill="url(#m-glow)"/>
+  <ellipse cx="400" cy="470" rx="185" ry="200" fill="none" stroke="url(#m-metal)" stroke-width="58"/>
+  <ellipse cx="400" cy="470" rx="185" ry="200" fill="none" stroke="#FFFFFF" stroke-opacity=".18" stroke-width="8" stroke-dasharray="60 560"/>
+  <rect x="308" y="196" width="184" height="128" rx="18" fill="url(#m-metal)"/>
+  <rect x="330" y="216" width="140" height="88" rx="10" fill="url(#m-stone)"/>
+  <path d="M338 224 L456 224 L344 296 Z" fill="#FFFFFF" opacity=".07"/>
+  <circle cx="352" cy="238" r="3.4" fill="#F4F6F8" opacity=".85"/>
+  <path d="M598 168 l6 16 16 6 -16 6 -6 16 -6 -16 -16 -6 16 -6 z" fill="#E8EBEF" opacity=".8"/>
+  <path d="M196 560 l4.5 12 12 4.5 -12 4.5 -4.5 12 -4.5 -12 -12 -4.5 12 -4.5 z" fill="#C9CCD1" opacity=".55"/>
+</svg>

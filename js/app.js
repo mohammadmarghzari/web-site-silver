@@ -1,0 +1,437 @@
+/* ============================================================
+   SilvershopIR — موتور اسکرول سینمایی
+   Lenis + GSAP ScrollTrigger + رندر کنواس
+   ============================================================ */
+(function () {
+  "use strict";
+
+  /* ---------- پیکربندی ----------
+     وقتی ویدیوی واقعی آماده شد:
+       1) فریم‌ها را با ffmpeg در پوشه frames/ استخراج کنید
+          (frame_0001.webp ... — طبق اسکیل video-to-website)
+       2) FRAME_MODE را به "frames" تغییر دهید و FRAME_COUNT را تنظیم کنید */
+  const FRAME_MODE = "procedural";        // "procedural" | "frames"
+  const FRAME_COUNT = 240;
+  const FRAME_PATH = (i) => `frames/frame_${String(i + 1).padStart(4, "0")}.webp`;
+  const FRAME_SPEED = 2.0;                // 1.8–2.2
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ---------- ابزارها ---------- */
+  const FA_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
+  const toFa = (n) => String(n).replace(/\d/g, (d) => FA_DIGITS[d]);
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+
+  /* ---------- Lenis ---------- */
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: !reduceMotion
+  });
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  /* ---------- عناصر ---------- */
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const canvasWrap = document.querySelector(".canvas-wrap");
+  const heroSection = document.getElementById("hero");
+  const scrollContainer = document.getElementById("scroll-container");
+  const overlay = document.getElementById("dark-overlay");
+  const marqueeWrap = document.querySelector(".marquee-wrap");
+  const marqueeText = document.querySelector(".marquee-text");
+
+  /* ---------- کنواس: اندازه و DPR ---------- */
+  let dpr = 1;
+  function sizeCanvas() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(window.innerWidth * dpr);
+    canvas.height = Math.round(window.innerHeight * dpr);
+    drawCurrent();
+  }
+
+  /* ---------- حالت فریم (ویدیوی واقعی) ---------- */
+  const frames = [];
+  let framesLoaded = 0;
+  const IMAGE_SCALE = 0.86;
+  let sampledBg = "#0D0C0B";
+
+  function sampleBgColor(img) {
+    try {
+      const c = document.createElement("canvas");
+      c.width = 8; c.height = 8;
+      const cc = c.getContext("2d");
+      cc.drawImage(img, 0, 0, 8, 8);
+      const d = cc.getImageData(0, 0, 2, 2).data;
+      sampledBg = `rgb(${d[0]},${d[1]},${d[2]})`;
+    } catch (_) { /* CORS-safe fallback */ }
+  }
+
+  function drawImageFrame(index) {
+    const img = frames[index];
+    if (!img) return;
+    const cw = canvas.width, ch = canvas.height;
+    const iw = img.naturalWidth, ih = img.naturalHeight;
+    const scale = Math.max(cw / iw, ch / ih) * IMAGE_SCALE;
+    const dw = iw * scale, dh = ih * scale;
+    ctx.fillStyle = sampledBg;
+    ctx.fillRect(0, 0, cw, ch);
+    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+  }
+
+  function preloadFrames(onProgress, onDone) {
+    let done = 0;
+    const load = (i) => {
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        done++; framesLoaded = done;
+        if (done % 20 === 0 && img.naturalWidth) sampleBgColor(img);
+        onProgress(done / FRAME_COUNT);
+        if (done === FRAME_COUNT) onDone();
+      };
+      img.src = FRAME_PATH(i);
+      frames[i] = img;
+    };
+    for (let i = 0; i < Math.min(10, FRAME_COUNT); i++) load(i);
+    setTimeout(() => { for (let i = 10; i < FRAME_COUNT; i++) load(i); }, 60);
+  }
+
+  /* ---------- حالت رویه‌ای: حلقه نقره سه‌بعدی ----------
+     جایگزین موقت ویدیو — یک انگشتر نقره که با اسکرول می‌چرخد */
+  const SEG = 200;
+  function drawProcedural(t) {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    // پس‌زمینه و نور محیطی
+    ctx.fillStyle = "#0D0C0B";
+    ctx.fillRect(0, 0, w, h);
+    const gx = w * (0.5 + 0.08 * Math.sin(t * Math.PI * 2));
+    const glow = ctx.createRadialGradient(gx, h * 0.42, 0, gx, h * 0.42, Math.max(w, h) * 0.5);
+    glow.addColorStop(0, "rgba(201,204,209,0.10)");
+    glow.addColorStop(0.5, "rgba(185,168,140,0.035)");
+    glow.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, w, h);
+
+    // پارامترهای حلقه
+    const cx = w / 2, cy = h * 0.5;
+    const R = Math.min(w, h) * 0.30;
+    const tube = Math.min(w, h) * 0.030;
+    const ry = t * Math.PI * 1.35 + 0.4;          // چرخش اصلی با اسکرول
+    const rx = 0.95 + 0.25 * Math.sin(t * Math.PI); // تیلت
+    const f = Math.min(w, h) * 1.6;                // پرسپکتیو
+
+    const cosY = Math.cos(ry), sinY = Math.sin(ry);
+    const cosX = Math.cos(rx), sinX = Math.sin(rx);
+
+    const pts = [];
+    for (let i = 0; i <= SEG; i++) {
+      const th = (i / SEG) * Math.PI * 2;
+      // نقطه روی حلقه، سپس دوران حول Y و X
+      let x = R * Math.cos(th), y = 0, z = R * Math.sin(th);
+      let x1 = x * cosY + z * sinY;
+      let z1 = -x * sinY + z * cosY;
+      let y1 = y * cosX - z1 * sinX;
+      let z2 = y * sinX + z1 * cosX;
+      const p = f / (f + z2);
+      pts.push({ sx: cx + x1 * p, sy: cy + y1 * p, z: z2, p, th });
+    }
+
+    // مرتب‌سازی سگمنت‌ها از دور به نزدیک
+    const segs = [];
+    for (let i = 0; i < SEG; i++) segs.push(i);
+    segs.sort((a, b) => (pts[b].z + pts[b + 1].z) - (pts[a].z + pts[a + 1].z));
+
+    const zMax = R;
+    for (const i of segs) {
+      const a = pts[i], b = pts[i + 1];
+      const zn = clamp01(1 - ((a.z + b.z) / 2 + zMax) / (2 * zMax)); // 0=دور 1=نزدیک
+      // درخشش متالیک: باند روشن که با چرخش جابه‌جا می‌شود
+      const band = Math.pow(Math.abs(Math.sin(a.th * 2 + t * 6.0)), 6);
+      const l = lerp(0.26, 1, zn);
+      const rC = Math.round(lerp(70, 236, l) + band * 19 * zn);
+      const gC = Math.round(lerp(72, 239, l) + band * 16 * zn);
+      const bC = Math.round(lerp(76, 242, l) + band * 13 * zn);
+      ctx.strokeStyle = `rgb(${Math.min(rC,255)},${Math.min(gC,255)},${Math.min(bC,255)})`;
+      ctx.lineWidth = tube * a.p * lerp(0.65, 1.15, zn);
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(a.sx, a.sy);
+      ctx.lineTo(b.sx, b.sy);
+      ctx.stroke();
+    }
+
+    // جرقه‌های نقره
+    const sparks = 5;
+    for (let s = 0; s < sparks; s++) {
+      const phase = (t * 1.6 + s / sparks) % 1;
+      const alpha = Math.sin(phase * Math.PI);
+      if (alpha <= 0.05) continue;
+      const th = s * 2.39996 + t * Math.PI * 2;
+      let x = R * Math.cos(th), z = R * Math.sin(th);
+      let x1 = x * cosY + z * sinY;
+      let z1 = -x * sinY + z * cosY;
+      let y1 = -z1 * sinX;
+      let z2 = z1 * cosX;
+      if (z2 > 0) continue;                        // فقط سمت نزدیک
+      const p = f / (f + z2);
+      const sx = cx + x1 * p, sy = cy + y1 * p;
+      const r = tube * 0.9 * alpha;
+      ctx.save();
+      ctx.globalAlpha = alpha * 0.9;
+      ctx.fillStyle = "#FFFFFF";
+      ctx.beginPath();
+      ctx.moveTo(sx, sy - r * 2.4);
+      ctx.quadraticCurveTo(sx + r * .5, sy - r * .5, sx + r * 2.4, sy);
+      ctx.quadraticCurveTo(sx + r * .5, sy + r * .5, sx, sy + r * 2.4);
+      ctx.quadraticCurveTo(sx - r * .5, sy + r * .5, sx - r * 2.4, sy);
+      ctx.quadraticCurveTo(sx - r * .5, sy - r * .5, sx, sy - r * 2.4);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // وینیت
+    const vig = ctx.createRadialGradient(cx, cy, Math.min(w, h) * 0.35, cx, cy, Math.max(w, h) * 0.75);
+    vig.addColorStop(0, "rgba(0,0,0,0)");
+    vig.addColorStop(1, "rgba(6,5,4,0.55)");
+    ctx.fillStyle = vig;
+    ctx.fillRect(0, 0, w, h);
+  }
+
+  /* ---------- رندر جاری ---------- */
+  let currentFrame = 0;   // اندیس فریم یا [0..1] برای حالت رویه‌ای
+  let currentT = 0;
+  function drawCurrent() {
+    if (FRAME_MODE === "frames") drawImageFrame(currentFrame);
+    else drawProcedural(currentT);
+  }
+
+  /* ---------- لودر ---------- */
+  const loader = document.getElementById("loader");
+  const loaderBar = document.getElementById("loader-bar");
+  const loaderPercent = document.getElementById("loader-percent");
+  function setLoader(p) {
+    loaderBar.style.width = (p * 100).toFixed(0) + "%";
+    loaderPercent.textContent = toFa(Math.round(p * 100)) + "٪";
+  }
+  function finishLoader() {
+    setLoader(1);
+    setTimeout(() => loader.classList.add("done"), 250);
+    introReveal();
+  }
+
+  /* ---------- انیمیشن ورود هیرو ---------- */
+  function introReveal() {
+    if (reduceMotion) return;
+    gsap.from(".hero-label, .hero-heading .word, .hero-tagline, .scroll-indicator", {
+      y: 46, opacity: 0, duration: 1.05, stagger: 0.09, ease: "power3.out", delay: 0.15
+    });
+  }
+
+  /* ---------- بخش‌های اسکرولی ---------- */
+  const sections = Array.from(document.querySelectorAll(".scroll-section"));
+  const sectionData = sections.map((el) => {
+    const enter = parseFloat(el.dataset.enter) / 100;
+    const leave = parseFloat(el.dataset.leave) / 100;
+
+    const children = el.querySelectorAll(
+      ".section-label, .product-figure, .section-figure, .section-heading, .section-body, .form-row, .cta-button, .stat"
+    );
+    const tl = gsap.timeline({ paused: true });
+    switch (el.dataset.animation) {
+      case "slide-left":
+        tl.from(children, { x: -80, opacity: 0, stagger: 0.12, duration: 0.9, ease: "power3.out" }); break;
+      case "slide-right":
+        tl.from(children, { x: 80, opacity: 0, stagger: 0.12, duration: 0.9, ease: "power3.out" }); break;
+      case "scale-up":
+        tl.from(children, { scale: 0.85, opacity: 0, stagger: 0.11, duration: 1.0, ease: "power2.out" }); break;
+      case "rotate-in":
+        tl.from(children, { y: 40, rotation: 3, opacity: 0, stagger: 0.1, duration: 0.9, ease: "power3.out" }); break;
+      case "stagger-up":
+        tl.from(children, { y: 60, opacity: 0, stagger: 0.14, duration: 0.8, ease: "power3.out" }); break;
+      case "clip-reveal":
+        tl.from(children, { clipPath: "inset(100% 0 0 0)", opacity: 0, stagger: 0.13, duration: 1.0, ease: "power4.inOut" }); break;
+      default: // fade-up
+        tl.from(children, { y: 50, opacity: 0, stagger: 0.11, duration: 0.9, ease: "power3.out" });
+    }
+    if (reduceMotion) tl.timeScale(100);
+    return {
+      el, tl,
+      enter, leave,
+      persist: el.dataset.persist === "true",
+      isStats: el.classList.contains("section-stats"),
+      played: false
+    };
+  });
+
+  /* هر بخش باید وقتی وسطِ بازه‌اش هستیم، وسط ویوپورت باشد.
+     پیشرفت اسکرول روی (ارتفاع کانتینر - ویوپورت) حساب می‌شود،
+     پس جای بخش = midFrac × (H - vh) + vh/2 */
+  function layoutSections() {
+    const H = scrollContainer.offsetHeight;
+    const vh = window.innerHeight;
+    for (const s of sectionData) {
+      const mid = (s.enter + s.leave) / 2;
+      s.el.style.top = (mid * (H - vh) + vh / 2) + "px";
+    }
+  }
+  layoutSections();
+
+  /* ---------- شمارنده‌ها (ارقام فارسی) ---------- */
+  let countersDone = false;
+  function runCounters() {
+    if (countersDone) return;
+    countersDone = true;
+    document.querySelectorAll(".stat-number").forEach((el) => {
+      const target = parseFloat(el.dataset.value);
+      const state = { v: 0 };
+      gsap.to(state, {
+        v: target,
+        duration: reduceMotion ? 0.01 : 2,
+        ease: "power1.out",
+        onUpdate: () => { el.textContent = toFa(Math.round(state.v)); }
+      });
+    });
+  }
+
+  /* ---------- روکش تیره (بازه آمار) ---------- */
+  const statsSec = sectionData.find((s) => s.isStats);
+  const overlayEnter = statsSec ? statsSec.enter - 0.015 : 0.7;
+  const overlayLeave = statsSec ? statsSec.leave + 0.005 : 0.8;
+
+  /* ---------- پیشرفت هیرو: محو + گشایش دایره‌ای ---------- */
+  ScrollTrigger.create({
+    trigger: heroSection,
+    start: "top top",
+    end: "bottom top",
+    scrub: true,
+    onUpdate: (self) => {
+      const p = self.progress;
+      heroSection.style.opacity = String(Math.max(0, 1 - p * 1.5));
+      const wipe = clamp01((p - 0.1) / 0.75);
+      canvasWrap.style.clipPath = `circle(${(wipe * 75).toFixed(2)}% at 50% 50%)`;
+    }
+  });
+
+  /* ---------- پیشرفت کانتینر: فریم‌ها + بخش‌ها + روکش ---------- */
+  ScrollTrigger.create({
+    trigger: scrollContainer,
+    start: "top top",
+    end: "bottom bottom",
+    scrub: true,
+    onUpdate: (self) => {
+      const p = self.progress;
+
+      // فریم ویدیو / چرخش رویه‌ای
+      const accel = clamp01(p * FRAME_SPEED);
+      if (FRAME_MODE === "frames") {
+        const idx = Math.min(Math.floor(accel * FRAME_COUNT), FRAME_COUNT - 1);
+        if (idx !== currentFrame) {
+          currentFrame = idx;
+          requestAnimationFrame(drawCurrent);
+        }
+      } else if (Math.abs(accel - currentT) > 0.0008) {
+        currentT = accel;
+        requestAnimationFrame(drawCurrent);
+      }
+
+      // بخش‌ها
+      for (const s of sectionData) {
+        const inRange = p >= s.enter && p <= s.leave;
+        const active = inRange || (s.persist && p > s.enter);
+        s.el.classList.toggle("is-active", active);
+        if (active) {
+          if (!s.played) { s.tl.play(); s.played = true; }
+          else if (s.tl.reversed()) s.tl.play();
+          if (s.isStats) runCounters();
+        } else if (s.played && !s.persist && !s.tl.reversed()) {
+          s.tl.reverse();
+        }
+      }
+
+      // روکش تیره
+      const fade = 0.03;
+      let op = 0;
+      if (p >= overlayEnter - fade && p < overlayEnter) op = (p - (overlayEnter - fade)) / fade;
+      else if (p >= overlayEnter && p <= overlayLeave) op = 1;
+      else if (p > overlayLeave && p <= overlayLeave + fade) op = 1 - (p - overlayLeave) / fade;
+      overlay.style.opacity = (op * 0.9).toFixed(3);
+
+      // مارکی: نمایان در میانه مسیر
+      let mOp = 0;
+      if (p > 0.24 && p < 0.30) mOp = (p - 0.24) / 0.06;
+      else if (p >= 0.30 && p <= 0.62) mOp = 1;
+      else if (p > 0.62 && p < 0.68) mOp = 1 - (p - 0.62) / 0.06;
+      marqueeWrap.style.opacity = (mOp * 0.55).toFixed(3);
+    }
+  });
+
+  /* ---------- حرکت مارکی ---------- */
+  gsap.fromTo(marqueeText, { xPercent: -4 }, {
+    xPercent: 26,
+    ease: "none",
+    scrollTrigger: { trigger: scrollContainer, start: "top top", end: "bottom bottom", scrub: true }
+  });
+
+  /* ---------- ناوبری هدر ---------- */
+  document.querySelectorAll("[data-scroll-to]").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const target = document.querySelector(link.dataset.scrollTo);
+      if (!target) return;
+      e.preventDefault();
+      let y;
+      if (target.classList.contains("scroll-section")) {
+        const mid = (parseFloat(target.dataset.enter) + parseFloat(target.dataset.leave)) / 200;
+        y = scrollContainer.offsetTop + mid * (scrollContainer.offsetHeight - window.innerHeight);
+      } else {
+        y = target.getBoundingClientRect().top + window.scrollY;
+      }
+      lenis.scrollTo(y, { duration: reduceMotion ? 0 : 1.6 });
+    });
+  });
+
+  /* ---------- فرم مشاوره → واتساپ ---------- */
+  const form = document.getElementById("consult-form");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = form.name.value.trim();
+    const phone = form.phone.value.trim();
+    const topic = form.topic.value;
+    const msg = form.message.value.trim();
+
+    form.name.classList.toggle("form-error", !name);
+    if (!name) { form.name.focus(); return; }
+
+    const lines = [`سلام، ${name} هستم.`];
+    if (phone) lines.push(`شماره تماس: ${phone}`);
+    lines.push(`موضوع: ${topic}`);
+    if (msg) lines.push(msg);
+    const url = "https://wa.me/989923166200?text=" + encodeURIComponent(lines.join("\n"));
+    window.open(url, "_blank", "noopener");
+  });
+
+  /* ---------- شروع ---------- */
+  window.addEventListener("resize", () => {
+    sizeCanvas();
+    layoutSections();
+    ScrollTrigger.refresh();
+  });
+  sizeCanvas();
+
+  if (FRAME_MODE === "frames") {
+    preloadFrames(setLoader, finishLoader);
+  } else {
+    // دارایی‌ها محلی و سبک‌اند — پر شدن سریع نوار
+    const state = { p: 0 };
+    gsap.to(state, {
+      p: 1, duration: reduceMotion ? 0.01 : 0.9, ease: "power2.inOut",
+      onUpdate: () => setLoader(state.p),
+      onComplete: finishLoader
+    });
+  }
+})();

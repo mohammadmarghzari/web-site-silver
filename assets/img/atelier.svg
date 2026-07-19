@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="کارگاه نقره‌سازی اصفهان">
+  <defs>
+    <linearGradient id="a-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8E9196"/>
+      <stop offset=".5" stop-color="#E8EBEF"/>
+      <stop offset="1" stop-color="#6E7175"/>
+    </linearGradient>
+    <radialGradient id="a-light" cx=".5" cy=".32" r=".75">
+      <stop offset="0" stop-color="#C9CCD1" stop-opacity=".22"/>
+      <stop offset=".55" stop-color="#B9A88C" stop-opacity=".07"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#100E0D"/>
+  <rect width="1600" height="900" fill="url(#a-light)"/>
+  <!-- قوس اصفهانی -->
+  <path d="M800 130 C 660 130 560 230 552 370 L552 780 L1048 780 L1048 370 C 1040 230 940 130 800 130 Z"
+        fill="none" stroke="#B9A88C" stroke-opacity=".34" stroke-width="3"/>
+  <path d="M800 168 C 686 168 600 254 594 372 L594 742 L1006 742 L1006 372 C 1000 254 914 168 800 168 Z"
+        fill="none" stroke="#C9CCD1" stroke-opacity=".14" stroke-width="2"/>
+  <!-- حلقه‌های نقره درون قوس -->
+  <ellipse cx="800" cy="500" rx="150" ry="158" fill="none" stroke="url(#a-metal)" stroke-width="20"/>
+  <ellipse cx="800" cy="500" rx="150" ry="158" fill="none" stroke="#FFFFFF" stroke-opacity=".2" stroke-width="4" stroke-dasharray="50 560"/>
+  <ellipse cx="642" cy="560" rx="84" ry="90" fill="none" stroke="url(#a-metal)" stroke-opacity=".55" stroke-width="10"/>
+  <ellipse cx="962" cy="568" rx="70" ry="76" fill="none" stroke="url(#a-metal)" stroke-opacity=".4" stroke-width="8"/>
+  <!-- نقوش هندسی حاشیه -->
+  <g stroke="#B9A88C" stroke-opacity=".22" stroke-width="1.6" fill="none">
+    <path d="M120 120 l36 36 -36 36 -36 -36 z"/>
+    <path d="M1480 120 l36 36 -36 36 -36 -36 z"/>
+    <path d="M120 708 l36 36 -36 36 -36 -36 z"/>
+    <path d="M1480 708 l36 36 -36 36 -36 -36 z"/>
+  </g>
+  <path d="M800 300 l6 16 16 6 -16 6 -6 16 -6 -16 -16 -6 16 -6 z" fill="#FFFFFF" opacity=".8"/>
+  <path d="M1120 260 l4.5 12 12 4.5 -12 4.5 -4.5 12 -4.5 -12 -12 -4.5 12 -4.5 z" fill="#E8EBEF" opacity=".5"/>
+  <path d="M478 640 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 z" fill="#C9CCD1" opacity=".45"/>
+</svg>
