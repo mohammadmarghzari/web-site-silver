@@ -10,8 +10,8 @@
        1) فریم‌ها را با ffmpeg در پوشه frames/ استخراج کنید
           (frame_0001.webp ... — طبق اسکیل video-to-website)
        2) FRAME_MODE را به "frames" تغییر دهید و FRAME_COUNT را تنظیم کنید */
-  const FRAME_MODE = "procedural";        // "procedural" | "frames"
-  const FRAME_COUNT = 240;
+  const FRAME_MODE = "frames";            // "procedural" | "frames"
+  const FRAME_COUNT = 192;
   const FRAME_PATH = (i) => `frames/frame_${String(i + 1).padStart(4, "0")}.webp`;
   const FRAME_SPEED = 2.0;                // 1.8–2.2
 
@@ -90,8 +90,10 @@
       img.onload = img.onerror = () => {
         done++; framesLoaded = done;
         if (done % 20 === 0 && img.naturalWidth) sampleBgColor(img);
+        // اگر فریمِ در حال نمایش تازه لود شد، کنواس را به‌روز کن
+        if (i === currentFrame) requestAnimationFrame(drawCurrent);
         onProgress(done / FRAME_COUNT);
-        if (done === FRAME_COUNT) onDone();
+        if (done === FRAME_COUNT) { onDone(); requestAnimationFrame(drawCurrent); }
       };
       img.src = FRAME_PATH(i);
       frames[i] = img;

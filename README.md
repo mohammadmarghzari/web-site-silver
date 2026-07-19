@@ -23,15 +23,20 @@ assets/img/         تصاویر SVG جایگزین محصولات
 frames/             محل فریم‌های ویدیوی واقعی (فعلاً خالی)
 ```
 
-## جایگزینی ویدیوی واقعی
+## ویدیوی محصول
 
-انیمیشن فعلی وسط صفحه (حلقه نقره) **جایگزین موقت** است. وقتی ویدیوی محصول آماده شد:
+ویدیوی «Luxury ring reveal» (۸ ثانیه، ۲۴fps) به ۱۹۲ فریم WebP در پوشه `frames/` تبدیل شده و با اسکرول پخش می‌شود (`FRAME_MODE = "frames"` در `js/app.js`).
+
+برای جایگزینی با ویدیوی دیگر:
 
 1. استخراج فریم‌ها (۱۵۰ تا ۳۰۰ فریم):
    ```bash
-   ffmpeg -i video.mp4 -vf "fps=15,scale=1920:-1" -c:v libwebp -quality 80 "frames/frame_%04d.webp"
+   rm -f frames/*.webp
+   ffmpeg -i video.mp4 -vf "fps=24,scale=1920:-1" -c:v libwebp -quality 80 "frames/frame_%04d.webp"
    ```
-2. در `js/app.js` مقدار `FRAME_MODE` را به `"frames"` و `FRAME_COUNT` را به تعداد فریم‌ها تغییر دهید.
+2. در `js/app.js` مقدار `FRAME_COUNT` را به تعداد فریم‌های جدید تغییر دهید.
+
+حالت جایگزین بدون ویدیو هم موجود است: `FRAME_MODE = "procedural"` (حلقه نقره سه‌بعدی رویه‌ای).
 
 ## فونت کلمه
 
