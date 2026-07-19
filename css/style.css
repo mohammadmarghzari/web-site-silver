@@ -281,7 +281,7 @@ a { color: inherit; text-decoration: none; cursor: pointer; }
 /* ---------- ۴. کنواس ---------- */
 .canvas-wrap {
   position: fixed; inset: 0; z-index: 1;
-  clip-path: circle(0% at 50% 50%);
+  opacity: 0;                    /* فید نرم با اسکرول — توسط JS کنترل می‌شود */
   background: var(--bg);
 }
 #canvas { width: 100%; height: 100%; display: block; }

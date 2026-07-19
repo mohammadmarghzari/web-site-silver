@@ -27,9 +27,11 @@
 
   /* ---------- Lenis ---------- */
   const lenis = new Lenis({
-    duration: 1.2,
+    duration: 1.65,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: !reduceMotion
+    smoothWheel: !reduceMotion,
+    wheelMultiplier: 0.85,
+    touchMultiplier: 1.6
   });
   lenis.on("scroll", ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));
@@ -57,8 +59,8 @@
   /* ---------- حالت فریم (ویدیوی واقعی) ---------- */
   const frames = [];
   let framesLoaded = 0;
-  const IMAGE_SCALE = 0.86;
-  let sampledBg = "#0D0C0B";
+  const IMAGE_SCALE = 0.9;   // حالت contain: ویدیو کامل و بدون بزرگ‌نمایی بی‌کیفیت
+  let sampledBg = "#060B0A";
 
   function sampleBgColor(img) {
     try {
@@ -73,10 +75,12 @@
 
   function drawImageFrame(index) {
     const img = frames[index];
-    if (!img) return;
+    if (!img || !img.naturalWidth) return;
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
-    const scale = Math.max(cw / iw, ch / ih) * IMAGE_SCALE;
+    // contain: کل قاب دیده می‌شود و ویدیو بیش از اندازه بزرگ (و پیکسلی) نمی‌شود
+    let scale = Math.min(cw / iw, ch / ih) * IMAGE_SCALE;
+    scale = Math.min(scale, 1.25 * dpr);   // سقف بزرگ‌نمایی برای حفظ کیفیت
     const dw = iw * scale, dh = ih * scale;
     ctx.fillStyle = sampledBg;
     ctx.fillRect(0, 0, cw, ch);
@@ -307,7 +311,7 @@
   const overlayEnter = statsSec ? statsSec.enter - 0.015 : 0.7;
   const overlayLeave = statsSec ? statsSec.leave + 0.005 : 0.8;
 
-  /* ---------- پیشرفت هیرو: محو + گشایش دایره‌ای ---------- */
+  /* ---------- پیشرفت هیرو: محو هیرو + فید نرم ویدیو ---------- */
   ScrollTrigger.create({
     trigger: heroSection,
     start: "top top",
@@ -316,8 +320,8 @@
     onUpdate: (self) => {
       const p = self.progress;
       heroSection.style.opacity = String(Math.max(0, 1 - p * 1.5));
-      const wipe = clamp01((p - 0.1) / 0.75);
-      canvasWrap.style.clipPath = `circle(${(wipe * 75).toFixed(2)}% at 50% 50%)`;
+      const fade = clamp01((p - 0.08) / 0.72);
+      canvasWrap.style.opacity = (fade * fade * (3 - 2 * fade)).toFixed(3); // smoothstep
     }
   });
 
