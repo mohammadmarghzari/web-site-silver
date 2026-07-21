@@ -429,6 +429,75 @@
     window.open(url, "_blank", "noopener");
   });
 
+  /* ---------- موسیقی پس‌زمینه ----------
+     مرورگرها پخش خودکار صدا را تا اولین تعامل کاربر مسدود می‌کنند؛
+     پس با اولین کلیک/اسکرول با فید نرم شروع می‌شود.
+     برای تعویض آهنگ: assets/audio/ambient.mp3 را جایگزین کنید. */
+  const MUSIC_SRC = "assets/audio/ambient.mp3";
+  const MUSIC_VOLUME = 0.35;
+  const musicBtn = document.getElementById("music-toggle");
+  const music = new Audio(MUSIC_SRC);
+  music.loop = true;
+  music.preload = "auto";
+  music.volume = 0;
+
+  const musicPref = () => localStorage.getItem("ssMusic") !== "off";
+  let musicFade = null;
+  function fadeMusic(to, ms, thenPause) {
+    if (musicFade) clearInterval(musicFade);
+    const from = music.volume, steps = 24, dt = ms / steps;
+    let i = 0;
+    musicFade = setInterval(() => {
+      i++;
+      music.volume = Math.max(0, Math.min(1, from + (to - from) * (i / steps)));
+      if (i >= steps) {
+        clearInterval(musicFade); musicFade = null;
+        if (thenPause) music.pause();
+      }
+    }, dt);
+  }
+  function setMusicUI(on) {
+    if (musicBtn) musicBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  }
+  function startMusic() {
+    music.play().then(() => {
+      fadeMusic(MUSIC_VOLUME, 1800, false);
+      setMusicUI(true);
+    }).catch(() => { /* منتظر تعامل کاربر می‌مانیم */ });
+  }
+  function stopMusic() {
+    fadeMusic(0, 500, true);
+    setMusicUI(false);
+  }
+
+  if (musicBtn) {
+    musicBtn.addEventListener("click", () => {
+      const isOn = musicBtn.getAttribute("aria-pressed") === "true";
+      if (!isOn) {
+        localStorage.setItem("ssMusic", "on");
+        startMusic();
+      } else {
+        localStorage.setItem("ssMusic", "off");
+        stopMusic();
+      }
+    });
+  }
+
+  if (musicPref()) {
+    startMusic(); // اگر مرورگر اجازه داد
+    const kick = () => {
+      if (music.paused && musicPref()) startMusic();
+      window.removeEventListener("pointerdown", kick);
+      window.removeEventListener("keydown", kick);
+      window.removeEventListener("wheel", kick);
+      window.removeEventListener("touchstart", kick);
+    };
+    window.addEventListener("pointerdown", kick, { once: false });
+    window.addEventListener("keydown", kick);
+    window.addEventListener("wheel", kick, { passive: true });
+    window.addEventListener("touchstart", kick, { passive: true });
+  }
+
   /* ---------- فید نرم عکس‌های محصول پس از لود ---------- */
   document.querySelectorAll(".product-figure img").forEach((img) => {
     const done = () => img.classList.add("img-loaded");
