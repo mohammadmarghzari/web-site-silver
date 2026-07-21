@@ -28,6 +28,11 @@
   font-weight: 900; font-style: normal; font-display: swap;
 }
 @font-face {
+  font-family: 'Italiana';
+  src: url('../assets/fonts/italiana/Italiana-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
   font-family: 'Vazirmatn';
   src: url('../assets/fonts/vazirmatn/Vazirmatn-Light.woff2') format('woff2');
   font-weight: 300; font-style: normal; font-display: swap;
@@ -55,20 +60,20 @@
 
 /* ---------- توکن‌های طراحی ---------- */
 :root {
-  --bg: #060B0A;            /* سبز-مشکی عمیق — عمداً #000 خالص نیست */
-  --bg-2: #0B1512;
-  --panel: rgba(11, 21, 18, .78);
-  --ink: #E9F2EE;
-  --muted: #8FA39B;
+  --bg: #0D0D0F;            /* مونوکرومِ ذغالی — بدون هیچ رنگ اکسنت */
+  --bg-2: #161618;
+  --panel: rgba(20, 20, 22, .82);
+  --ink: #F1F1EF;
+  --muted: #8F8F8C;
   --silver: #C9CCD1;
-  --silver-bright: #ECEFF2;
+  --silver-bright: #EDEDEB;
   --silver-dim: #8E9196;
-  --accent: #31E5A5;        /* زمردی درخشان */
-  --accent-soft: rgba(49, 229, 165, .14);
-  --champagne: #9DB8AC;     /* لیبل‌ها — سبزِ نقره‌ای ملایم */
-  --line: rgba(201, 220, 212, .14);
+  --accent: #EDEDEB;        /* اکسنت = سفیدِ گرم — تم تک‌رنگ */
+  --accent-soft: rgba(237, 237, 235, .1);
+  --champagne: #9A9A96;     /* لیبل‌های ریز خاکستری */
+  --line: rgba(237, 237, 235, .14);
   --font-fa: 'Kalameh', 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
-  --font-latin: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-latin: 'Italiana', 'Cormorant Garamond', Georgia, serif;
   --ease-lux: cubic-bezier(.16, 1, .3, 1);
   --header-h: 76px;
 }
@@ -91,7 +96,7 @@ body {
 
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; cursor: pointer; }
-.latin { font-family: var(--font-latin); font-weight: 600; letter-spacing: .04em; direction: ltr; unicode-bidi: isolate; }
+.latin { font-family: var(--font-latin); font-weight: 400; letter-spacing: .14em; direction: ltr; unicode-bidi: isolate; }
 .ltr { direction: ltr; unicode-bidi: isolate; }
 .muted { color: var(--muted); }
 
@@ -147,133 +152,122 @@ a { color: inherit; text-decoration: none; cursor: pointer; }
 .site-header nav a:hover { color: var(--ink); }
 .site-header nav a:hover::after { transform: scaleX(1); }
 .header-cta {
-  font-size: .85rem; font-weight: 700; color: #052A1D; background: var(--accent);
-  padding: 11px 20px; border-radius: 999px; min-height: 44px;
+  font-size: .8rem; font-weight: 500; color: var(--ink); background: transparent;
+  padding: 11px 22px; border: 1px solid var(--line); border-radius: 0; min-height: 44px;
   display: inline-flex; align-items: center;
-  transition: background .25s, transform .25s, box-shadow .25s;
+  transition: background .25s, color .25s, border-color .25s;
 }
 .header-cta:hover {
-  background: #4BF0B6; transform: translateY(-1px);
-  box-shadow: 0 8px 26px -8px rgba(49, 229, 165, .55);
+  background: var(--silver-bright); color: #0D0D0F; border-color: var(--silver-bright);
 }
 
-/* ---------- ۳. هیرو (سینمایی مرکزی) ---------- */
+/* ---------- ۳. هیرو (محصول‌محورِ مونوکروم) ---------- */
 .hero-standalone {
   position: relative; z-index: 6;
   min-height: 100vh; min-height: 100svh;
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  text-align: center;
-  padding: calc(var(--header-h) + 7vh) 6vw 0;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: calc(var(--header-h) + 2vh) 6vw 10vh;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 75% 55% at 50% 108%, rgba(49, 229, 165, .16), transparent 65%),
-    radial-gradient(ellipse 55% 40% at 50% 0%, rgba(49, 229, 165, .07), transparent 70%),
-    linear-gradient(180deg, #081210 0%, var(--bg) 55%, #04110C 100%);
+    radial-gradient(ellipse 60% 50% at 26% 60%, rgba(237, 237, 235, .05), transparent 65%),
+    linear-gradient(180deg, #101012 0%, var(--bg) 60%, #0A0A0C 100%);
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+  align-items: center;
+  gap: 4vw;
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
 }
 .section-label {
   display: inline-block;
-  font-size: .78rem; font-weight: 500;
+  font-size: .74rem; font-weight: 500;
   color: var(--champagne);
-  letter-spacing: .22em;
+  letter-spacing: .04em;
   margin-bottom: 1.1rem;
 }
-.hero-heading {
-  display: flex; flex-direction: column; align-items: center;
-  gap: .1em;
-  font-weight: 300;
-  line-height: 1.25;
-  letter-spacing: -.01em;
+.hero-display { display: flex; flex-direction: column; gap: .55rem; }
+.latin-display {
+  font-family: var(--font-latin);
+  font-weight: 400;
+  font-size: clamp(3rem, 5.6vw, 5.9rem);
+  line-height: .96;
+  letter-spacing: .08em;
+  color: var(--ink);
+  direction: ltr; unicode-bidi: isolate;
+  white-space: nowrap;
 }
-.hero-heading .word { display: inline-block; }
-.hero-line {
-  display: inline-flex; align-items: center; justify-content: center;
-  flex-wrap: wrap;
-  gap: .22em;
-  font-size: clamp(2.5rem, 6.4vw, 5.6rem);
-}
-.hero-line-1 { color: #AEBEB7; font-weight: 300; }
-.hero-line-2 { color: #C7D4CE; font-weight: 300; }
-.word-accent {
-  font-weight: 900;
-  font-style: italic;
-  color: transparent;
-  background: linear-gradient(120deg, var(--silver-dim) 5%, var(--silver-bright) 42%, #FFFFFF 50%, var(--silver-dim) 95%);
-  -webkit-background-clip: text; background-clip: text;
-  padding-inline: .08em;
-}
-.word-plus { color: var(--accent); font-weight: 400; }
-.icon-badge {
-  width: .95em; height: .95em;
-  border-radius: 50%;
-  border: 1px solid rgba(201, 220, 212, .35);
-  display: inline-flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 22px rgba(49, 229, 165, .25), inset 0 0 14px rgba(49, 229, 165, .12);
-}
-.icon-badge svg { width: 58%; height: 58%; }
-.icon-spark { width: .62em; height: .62em; display: inline-flex; }
-.icon-spark svg {
-  width: 100%; height: 100%;
-  filter: drop-shadow(0 0 10px rgba(49, 229, 165, .8));
-}
-.hero-tagline {
-  margin-top: 1.4rem;
-  font-size: clamp(.92rem, 1.3vw, 1.05rem);
+.fa-display {
+  font-size: clamp(1.25rem, 2.1vw, 1.9rem);
   font-weight: 300;
   color: var(--muted);
-  max-width: 34rem;
 }
-.hero-cta {
-  margin-top: 1.8rem;
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 15px 34px; min-height: 50px;
-  font-size: .98rem; font-weight: 500;
-  color: var(--ink);
-  background: rgba(4, 12, 9, .82);
-  border: 1px solid rgba(201, 220, 212, .28);
-  border-radius: 12px;
-  backdrop-filter: blur(6px);
-  transition: border-color .25s, box-shadow .25s, transform .25s var(--ease-lux);
+.hero-tagline {
+  margin-top: 1.5rem;
+  font-size: clamp(.9rem, 1.1vw, 1rem);
+  font-weight: 300;
+  line-height: 2.1;
+  color: var(--muted);
+  max-width: 26rem;
 }
-.hero-cta:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 34px -6px rgba(49, 229, 165, .45);
-  transform: translateY(-2px);
+.hero-specs {
+  display: flex; gap: clamp(1.6rem, 3.5vw, 3.4rem);
+  margin-top: 2rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line);
 }
+.hero-specs > div { display: flex; flex-direction: column; gap: .35rem; }
+.spec-k { font-size: .7rem; color: var(--champagne); }
+.spec-v { font-size: .98rem; font-weight: 500; color: var(--ink); }
+.hero-actions { display: flex; align-items: center; gap: 14px; margin-top: 2.2rem; flex-wrap: wrap; }
 
-/* صحنه پایین هیرو: سیلوئت + قوس‌های نئونی + ذرات */
-.hero-stage {
-  position: absolute; inset: auto 0 0 0;
-  height: 56vh;
-  pointer-events: none;
-  z-index: -1;
+/* محصول شناور روی سکو */
+.hero-visual {
+  position: relative;
+  min-height: 58vh;
+  display: flex; align-items: flex-end; justify-content: center;
 }
-.hero-stage .stage-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.hero-silhouette {
-  position: absolute; bottom: -9%; left: 50%;
+.pedestal {
+  position: absolute; bottom: 0; left: 50%;
   transform: translateX(-50%);
-  width: min(470px, 70vw);
-  opacity: .92;
+  width: min(430px, 34vw);
+  height: clamp(90px, 12vh, 130px);
+  background: linear-gradient(180deg, #3A3A3D 0%, #242427 38%, #131315 100%);
+  border-radius: 50% 50% 0 0 / 34px 34px 0 0;
 }
-.hero-particles, .hero-particles::after {
-  content: ""; position: absolute; inset: 0;
-  background-image:
-    radial-gradient(circle, rgba(49,229,165,.85) 0 1.2px, transparent 2px),
-    radial-gradient(circle, rgba(180,240,215,.55) 0 1px, transparent 1.8px),
-    radial-gradient(circle, rgba(49,229,165,.4) 0 1.6px, transparent 2.4px);
-  background-size: 340px 260px, 260px 210px, 420px 330px;
-  background-position: 12% 18%, 68% 42%, 38% 72%;
-  opacity: .8;
-  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 70%, #000 30%, transparent 75%);
-          mask-image: radial-gradient(ellipse 70% 80% at 50% 70%, #000 30%, transparent 75%);
+.pedestal::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0;
+  height: 40px;
+  background: radial-gradient(ellipse 50% 45% at 50% 40%, #4A4A4E, #2C2C2F 70%);
+  border-radius: 50%;
+  transform: translateY(-45%);
 }
-.hero-particles::after {
-  background-position: 82% 66%, 22% 84%, 58% 12%;
-  opacity: .5;
+.pedestal::after {
+  /* سایه محصول روی سکو */
+  content: ""; position: absolute; top: -14px; left: 50%;
+  transform: translateX(-50%);
+  width: 62%; height: 34px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, .62), transparent 68%);
+  border-radius: 50%;
+}
+.hero-product {
+  position: relative; z-index: 2;
+  width: min(400px, 30vw);
+  margin-bottom: clamp(120px, 17vh, 190px);
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 34px 44px rgba(0, 0, 0, .55));
+  animation: float 7s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(-6.5deg) translateY(-14px); }
 }
 .scroll-indicator {
   position: absolute; bottom: 4.5vh; right: 6vw;
   display: flex; align-items: center; gap: 10px;
-  color: var(--muted); font-size: .78rem; letter-spacing: .18em;
+  color: var(--muted); font-size: .74rem; letter-spacing: .04em;
 }
 .scroll-indicator svg { animation: nudge 1.8s var(--ease-lux) infinite; }
 @keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
@@ -355,14 +349,14 @@ a { color: inherit; text-decoration: none; cursor: pointer; }
 .section-figure {
   margin: 1.2rem 0 1.4rem;
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: 2px;
   overflow: hidden;
 }
 .product-figure {
   width: min(250px, 21vw);
   margin: .4rem 0 1.3rem;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   overflow: hidden;
   background: #F2F1EE;   /* کارت روشن برای عکس‌های واقعی محصول */
   box-shadow: 0 18px 44px -18px rgba(0, 0, 0, .55);
@@ -375,24 +369,23 @@ a { color: inherit; text-decoration: none; cursor: pointer; }
 .product-figure img.img-loaded { opacity: 1; }
 
 .cta-button {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   margin-top: .6rem;
-  padding: 14px 30px; min-height: 48px;
-  font-family: var(--font-fa); font-size: .95rem; font-weight: 700;
-  color: #052A1D; background: var(--accent);
-  border: none; border-radius: 999px; cursor: pointer;
-  transition: background .25s, transform .25s var(--ease-lux), box-shadow .25s;
+  padding: 15px 36px; min-height: 50px;
+  font-family: var(--font-fa); font-size: .88rem; font-weight: 500;
+  color: #0D0D0F; background: var(--silver-bright);
+  border: 1px solid var(--silver-bright); border-radius: 0; cursor: pointer;
+  transition: background .25s, color .25s, border-color .25s, transform .25s var(--ease-lux);
 }
 .cta-button:hover {
-  background: #4BF0B6;
+  background: #FFFFFF; border-color: #FFFFFF;
   transform: translateY(-2px);
-  box-shadow: 0 12px 38px -10px rgba(49, 229, 165, .55);
 }
 .cta-button.ghost {
-  color: var(--silver-bright); background: transparent; font-weight: 500;
-  border: 1px solid var(--silver-dim);
+  color: var(--ink); background: transparent;
+  border: 1px solid var(--line);
 }
-.cta-button.ghost:hover { border-color: var(--accent); color: #D8FFF0; background: var(--accent-soft); box-shadow: none; }
+.cta-button.ghost:hover { border-color: var(--silver-bright); background: var(--accent-soft); transform: translateY(-2px); }
 
 /* ---------- آمار ---------- */
 .section-stats { z-index: 5; padding: 0 6vw; }
@@ -420,7 +413,7 @@ a { color: inherit; text-decoration: none; cursor: pointer; }
 .form-row input, .form-row select, .form-row textarea {
   font-family: var(--font-fa); font-size: .95rem; font-weight: 300;
   color: var(--ink); background: rgba(22, 19, 17, .6);
-  border: 1px solid var(--line); border-radius: 6px;
+  border: 1px solid var(--line); border-radius: 2px;
   padding: 12px 14px; min-height: 48px;
   transition: border-color .2s, background .2s;
 }
@@ -440,7 +433,7 @@ a { color: inherit; text-decoration: none; cursor: pointer; }
   max-width: 900px; margin: 0 auto;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 2px;
   padding: clamp(1.8rem, 4vw, 3.4rem);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -481,11 +474,17 @@ a.contact-value:hover { color: var(--silver-bright); }
   .logo .latin { font-size: 1.05rem; }
   .header-cta { font-size: .78rem; padding: 10px 16px; }
 
-  .hero-line { font-size: clamp(1.75rem, 8.6vw, 2.6rem); }
-  .hero-standalone { padding-top: calc(var(--header-h) + 4vh); }
-  .hero-stage { height: 46vh; }
-  .hero-silhouette { width: min(420px, 96vw); }
-  .scroll-indicator { right: 5vw; }
+  .hero-standalone { padding: calc(var(--header-h) + 3vh) 6vw 12vh; justify-content: flex-start; }
+  .hero-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+  .latin-display { font-size: clamp(2.5rem, 12.5vw, 3.4rem); letter-spacing: .07em; }
+  .fa-display { font-size: 1.05rem; }
+  .hero-specs { gap: 1.6rem; padding-top: 1.2rem; margin-top: 1.4rem; }
+  .hero-actions { margin-top: 1.6rem; }
+  .hero-actions .cta-button { flex: 1 1 auto; }
+  .hero-visual { min-height: 38vh; order: 2; }
+  .hero-product { width: min(230px, 56vw); margin-bottom: clamp(80px, 11vh, 110px); }
+  .pedestal { width: min(280px, 64vw); height: 80px; }
+  .scroll-indicator { display: none; }
 
   /* متن وسط‌چین با پس‌زمینه تیره — طبق قواعد موبایل اسکیل */
   .align-right, .align-left { padding: 0 6vw; }
@@ -493,7 +492,7 @@ a.contact-value:hover { color: var(--silver-bright); }
     max-width: 100%;
     background: var(--panel);
     border: 1px solid var(--line);
-    border-radius: 10px;
+    border-radius: 2px;
     padding: 1.5rem 1.3rem;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);

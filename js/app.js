@@ -61,7 +61,7 @@
   const frames = [];
   let framesLoaded = 0;
   const IMAGE_SCALE = 0.9;   // حالت contain: ویدیو کامل و بدون بزرگ‌نمایی بی‌کیفیت
-  let sampledBg = "#060B0A";
+  let sampledBg = "#0D0D0F";
 
   function sampleBgColor(img) {
     try {
@@ -114,12 +114,12 @@
     const w = canvas.width, h = canvas.height;
     ctx.clearRect(0, 0, w, h);
 
-    // پس‌زمینه و نور محیطی زمردی
-    ctx.fillStyle = "#060B0A";
+    // پس‌زمینه و نور محیطی نقره‌ای
+    ctx.fillStyle = "#0D0D0F";
     ctx.fillRect(0, 0, w, h);
     const gx = w * (0.5 + 0.08 * Math.sin(t * Math.PI * 2));
     const glow = ctx.createRadialGradient(gx, h * 0.42, 0, gx, h * 0.42, Math.max(w, h) * 0.5);
-    glow.addColorStop(0, "rgba(49,229,165,0.10)");
+    glow.addColorStop(0, "rgba(201,204,209,0.09)");
     glow.addColorStop(0.5, "rgba(201,204,209,0.03)");
     glow.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = glow;
@@ -235,10 +235,11 @@
   /* ---------- انیمیشن ورود هیرو ---------- */
   function introReveal() {
     if (reduceMotion) return;
-    gsap.from(".hero-label, .hero-heading .word, .hero-tagline, .hero-cta, .scroll-indicator", {
-      y: 46, opacity: 0, duration: 1.05, stagger: 0.07, ease: "power3.out", delay: 0.15
+    gsap.from(".hero-copy > *, .hero-copy .hero-display > *", {
+      y: 42, opacity: 0, duration: 1.0, stagger: 0.09, ease: "power3.out", delay: 0.15
     });
-    gsap.from(".hero-stage", { opacity: 0, y: 60, duration: 1.6, ease: "power2.out", delay: 0.5 });
+    gsap.from(".hero-visual", { opacity: 0, y: 50, duration: 1.5, ease: "power2.out", delay: 0.45 });
+    gsap.from(".scroll-indicator", { opacity: 0, duration: 1, delay: 1 });
   }
 
   /* ---------- بخش‌های اسکرولی ---------- */
