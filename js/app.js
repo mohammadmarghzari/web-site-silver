@@ -74,18 +74,34 @@
     } catch (_) { /* CORS-safe fallback */ }
   }
 
-  function drawImageFrame(index) {
-    const img = frames[index];
-    if (!img || !img.naturalWidth) return;
+  function drawContainImage(img, alpha) {
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
     // contain: کل قاب دیده می‌شود و ویدیو بیش از اندازه بزرگ (و پیکسلی) نمی‌شود
     let scale = Math.min(cw / iw, ch / ih) * IMAGE_SCALE;
     scale = Math.min(scale, 1.25 * dpr);   // سقف بزرگ‌نمایی برای حفظ کیفیت
     const dw = iw * scale, dh = ih * scale;
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+    ctx.globalAlpha = 1;
+  }
+
+  // floatIdx پیوسته است (نه عدد صحیح) — بین دو فریمِ مجاور ترکیبِ نرم (کراس‌فید)
+  // انجام می‌شود تا هیچ‌وقت تصویر با یک «پرش» خشک عوض نشود.
+  function drawImageFrame(floatIdx) {
+    const lo = Math.max(0, Math.min(FRAME_COUNT - 1, Math.floor(floatIdx)));
+    const hi = Math.min(FRAME_COUNT - 1, lo + 1);
+    const frac = floatIdx - lo;
+    const imgA = frames[lo];
+    if (!imgA || !imgA.naturalWidth) return;
+    const cw = canvas.width, ch = canvas.height;
     ctx.fillStyle = sampledBg;
     ctx.fillRect(0, 0, cw, ch);
-    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+    drawContainImage(imgA, 1);
+    const imgB = frames[hi];
+    if (hi !== lo && frac > 0.01 && imgB && imgB.naturalWidth) {
+      drawContainImage(imgB, frac);
+    }
   }
 
   function preloadFrames(onProgress, onDone) {
@@ -95,8 +111,10 @@
       img.onload = img.onerror = () => {
         done++; framesLoaded = done;
         if (done % 20 === 0 && img.naturalWidth) sampleBgColor(img);
-        // اگر فریمِ در حال نمایش تازه لود شد، کنواس را به‌روز کن
-        if (i === currentFrame) requestAnimationFrame(drawCurrent);
+        // اگر یکی از دو فریمِ در حال ترکیب (فعلی/بعدی) تازه لود شد، کنواس را به‌روز کن
+        if (i === Math.floor(currentFrame) || i === Math.ceil(currentFrame)) {
+          requestAnimationFrame(drawCurrent);
+        }
         onProgress(done / FRAME_COUNT);
         if (done === FRAME_COUNT) { onDone(); requestAnimationFrame(drawCurrent); }
       };
@@ -211,7 +229,7 @@
   }
 
   /* ---------- رندر جاری ---------- */
-  let currentFrame = 0;   // اندیس فریم یا [0..1] برای حالت رویه‌ای
+  let currentFrame = 0;   // اندیس پیوسته‌ی فریم (برای کراس‌فید) یا [0..1] برای حالت رویه‌ای
   let currentT = 0;
   function drawCurrent() {
     if (FRAME_MODE === "frames") drawImageFrame(currentFrame);
@@ -349,9 +367,9 @@
       // فریم ویدیو / چرخش رویه‌ای
       const accel = clamp01(p * FRAME_SPEED);
       if (FRAME_MODE === "frames") {
-        const idx = Math.min(Math.floor(accel * FRAME_COUNT), FRAME_COUNT - 1);
-        if (idx !== currentFrame) {
-          currentFrame = idx;
+        const target = accel * (FRAME_COUNT - 1);
+        if (Math.abs(target - currentFrame) > 0.01) {
+          currentFrame = target;
           requestAnimationFrame(drawCurrent);
         }
       } else if (Math.abs(accel - currentT) > 0.0008) {
