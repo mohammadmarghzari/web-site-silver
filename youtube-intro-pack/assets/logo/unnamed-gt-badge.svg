@@ -1,0 +1,48 @@
+<!--
+  PLACEHOLDER BRAND BADGE — "UNNAMED-GT"
+  No source artwork was supplied with this task, so this is an original,
+  abstract hexagon/monogram badge built to match the brief (hoodie drawstring
+  motif, red/white/black, premium gaming aesthetic). Swap this file for the
+  creator's real hoodie-logo artwork whenever it's available — every part
+  that references it (assets/logo, js/config.js LOGO_SRC) just points here,
+  so replacing this one file re-skins the whole pack.
+-->
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="UNNAMED-GT badge placeholder">
+  <defs>
+    <linearGradient id="gt-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#17181d"/>
+      <stop offset="100%" stop-color="#050608"/>
+    </linearGradient>
+    <linearGradient id="gt-edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff5468"/>
+      <stop offset="100%" stop-color="#ff0033"/>
+    </linearGradient>
+    <linearGradient id="gt-letters" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f2d3d7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- hexagon badge body -->
+  <polygon points="100,6 182,52 182,148 100,194 18,148 18,52"
+           fill="url(#gt-bg)" stroke="url(#gt-edge)" stroke-width="3"/>
+  <polygon points="100,20 170,59 170,141 100,180 30,141 30,59"
+           fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+
+  <!-- hoodie drawstring cords, knotted over the top edge -->
+  <g stroke="#e7e7ea" stroke-width="3.4" stroke-linecap="round" fill="none">
+    <path d="M78 24 C 70 40, 70 46, 80 56"/>
+    <path d="M122 24 C 130 40, 130 46, 120 56"/>
+  </g>
+  <circle cx="80" cy="58" r="4.2" fill="#c9cad0"/>
+  <circle cx="120" cy="58" r="4.2" fill="#c9cad0"/>
+
+  <!-- monogram -->
+  <text x="100" y="122" text-anchor="middle" font-family="-apple-system,'SF Pro Display','Segoe UI',Arial,sans-serif"
+        font-weight="800" font-size="64" fill="url(#gt-letters)" letter-spacing="1">GT</text>
+
+  <!-- brand wordmark -->
+  <rect x="46" y="146" width="108" height="22" rx="11" fill="rgba(255,30,50,0.14)" stroke="rgba(255,30,50,0.55)"/>
+  <text x="100" y="161.5" text-anchor="middle" font-family="-apple-system,'SF Pro Display','Segoe UI',Arial,sans-serif"
+        font-weight="700" font-size="12" letter-spacing="2.5" fill="#ffe3e6">UNNAMED</text>
+</svg>

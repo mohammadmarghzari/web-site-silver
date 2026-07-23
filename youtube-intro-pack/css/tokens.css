@@ -1,0 +1,55 @@
+/* ==========================================================================
+   INTRO PACK — DESIGN TOKENS
+   Single source of truth for colors, radii, blur, shadow & type.
+   Edit values here to re-skin the whole intro without touching component CSS.
+   (Text content & timing live in js/config.js — see that file too.)
+   ========================================================================== */
+
+:root {
+  /* ---- Brand palette (YouTube red / white / black, premium-refined) ---- */
+  --c-bg: #05060a;              /* near-black stage background, not pure black */
+  --c-bg-soft: #0b0d12;         /* card base surface, pre-glass */
+  --c-white: #f5f6f8;
+  --c-white-dim: rgba(245, 246, 248, 0.72);
+  --c-red: #ff1e32;             /* primary accent (refined YouTube red) */
+  --c-red-strong: #ff0033;      /* hotter red for glow cores / CTAs */
+  --c-red-soft: #ff5468;
+
+  /* ---- Glass / glow ---- */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-bg-strong: rgba(255, 255, 255, 0.10);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-blur: 28px;
+  --glow-red: rgba(255, 30, 50, 0.45);
+  --glow-red-soft: rgba(255, 30, 50, 0.22);
+
+  /* ---- Shape ---- */
+  --radius-card: 40px;
+  --radius-pill: 999px;
+  --radius-icon: 28px;
+
+  /* ---- Shadow ---- */
+  --shadow-card: 0 30px 80px -20px rgba(0, 0, 0, 0.65),
+                 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  --shadow-glow: 0 0 120px 10px var(--glow-red-soft);
+
+  /* ---- Type ---- */
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --fw-black: 800;
+  --fw-medium: 500;
+
+  /* ---- Canvas ---- */
+  --stage-w: 1080px;
+  --stage-h: 1920px;
+  /* Card/icon/type sizing scales off the SHORTER edge so proportions stay
+     sane in both the 9:16 and 16:9 layouts below — only overall layout
+     widths (card width, brand position) scale off --stage-w/--stage-h directly. */
+  --unit: min(var(--stage-w), var(--stage-h));
+}
+
+/* 16:9 override — flip on the stage via [data-aspect="16:9"], see js/intro.js */
+[data-aspect="16:9"] {
+  --stage-w: 1920px;
+  --stage-h: 1080px;
+}

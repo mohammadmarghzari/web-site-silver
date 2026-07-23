@@ -1,0 +1,48 @@
+<!--
+  PLACEHOLDER CREATOR SILHOUETTE
+  No creator photo/render was supplied with this task, so this is a generic,
+  faceless hoodie-wearing silhouette (rim-lit in the brand red) standing in
+  for "preserve the creator's appearance." It is intentionally featureless —
+  replace it with the creator's actual cutout/render before shipping.
+  Referenced from js/config.js (CREATOR_SRC); unused by default in the
+  8s intro timeline (it targets the 3 UI cards), but included here so a
+  channel-branded end-card or outro can reuse the same badge + silhouette.
+-->
+<svg viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Creator silhouette placeholder">
+  <defs>
+    <linearGradient id="body-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c1e24"/>
+      <stop offset="100%" stop-color="#08090c"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff0033" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#ff2f46" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- hoodie body -->
+  <path d="M150 40
+           c-34 0-58 22-58 54v14c-30 10-52 40-56 78l-6 60c-1 10 7 18 17 18h206
+           c10 0 18-8 17-18l-6-60c-4-38-26-68-56-78v-14c0-32-24-54-58-54z"
+        fill="url(#body-fill)" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+
+  <!-- rim light, camera-right edge -->
+  <path d="M208 46 c22 10 36 32 36 60v22 M244 160 l10 96"
+        fill="none" stroke="url(#rim)" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- hood -->
+  <path d="M104 108 c8-28 32-46 46-46s38 18 46 46c4 14-2 26-14 30-10-16-22-24-32-24s-22 8-32 24c-12-4-18-16-14-30z"
+        fill="#111318" stroke="rgba(255,255,255,0.1)"/>
+
+  <!-- drawstrings -->
+  <g stroke="#d8d9de" stroke-width="3" stroke-linecap="round" fill="none">
+    <path d="M138 150 C 134 172, 136 190, 142 206"/>
+    <path d="M162 150 C 166 172, 164 190, 158 206"/>
+  </g>
+  <circle cx="142" cy="209" r="4" fill="#b9bac0"/>
+  <circle cx="158" cy="209" r="4" fill="#b9bac0"/>
+
+  <!-- chest badge slot (mirrors unnamed-gt-badge.svg) -->
+  <polygon points="150,158 168,168 168,188 150,198 132,188 132,168"
+           fill="rgba(255,30,50,0.16)" stroke="rgba(255,30,50,0.6)" stroke-width="1.5"/>
+</svg>

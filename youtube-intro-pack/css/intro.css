@@ -1,0 +1,275 @@
+/* ==========================================================================
+   INTRO PACK — COMPONENT STYLES
+   Depends on tokens.css. All sizing is derived from --stage-w/--stage-h so
+   the whole pack reflows automatically between 9:16 and 16:9 (see
+   [data-aspect] in tokens.css and the toggle in js/intro.js).
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Stage: fixed-design canvas, scaled to fit the viewport by js/intro.js  */
+/* ---------------------------------------------------------------------- */
+.intro-viewport {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.intro-stage {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  background: radial-gradient(120% 90% at 50% 18%, #14060a 0%, var(--c-bg) 55%, #020203 100%);
+  overflow: hidden;
+  transform-origin: center center;
+  font-family: var(--font-display);
+  color: var(--c-white);
+}
+
+/* Ambient red key-light + vignette, always present behind the cards */
+.intro-stage::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(38% 26% at 50% 62%, var(--glow-red-soft) 0%, transparent 70%),
+    radial-gradient(60% 40% at 82% 8%, rgba(255, 30, 50, 0.12) 0%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.intro-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 80% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Fine grain / gloss sheen for a premium, non-flat look */
+.intro-stage__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.05) 0%, transparent 30%);
+  mix-blend-mode: screen;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Alpha/transparent mode — for exporting a MOV/WebM overlay with no dark  */
+/* backdrop (just the floating cards). Toggled by ?alpha=1, see intro.js. */
+/* Each card's own glow (.glass-card__glow) is kept — only the full-stage */
+/* dark backdrop/vignette is removed.                                     */
+/* ---------------------------------------------------------------------- */
+html.alpha-mode,
+html.alpha-mode body,
+html.alpha-mode .intro-viewport {
+  background: transparent;
+}
+.intro-stage.alpha-mode {
+  background: transparent;
+}
+.intro-stage.alpha-mode::before,
+.intro-stage.alpha-mode::after,
+.intro-stage.alpha-mode .intro-stage__sheen {
+  display: none;
+}
+
+/* Corner brand badge — always on screen (logo), low-key so cards lead */
+.intro-brand {
+  position: absolute;
+  top: calc(var(--stage-h) * 0.045);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--unit) * 0.018);
+  z-index: 4;
+  opacity: 0;
+}
+.intro-brand img,
+.intro-brand svg { width: calc(var(--unit) * 0.06); height: calc(var(--unit) * 0.06); }
+.intro-brand span {
+  font-weight: var(--fw-black);
+  letter-spacing: 0.16em;
+  font-size: calc(var(--unit) * 0.026);
+  text-transform: uppercase;
+  color: var(--c-white-dim);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Glass Card — the one reusable base component every scene extends       */
+/* ---------------------------------------------------------------------- */
+.glass-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--stage-w) * 0.74);
+  transform: translate(-50%, -50%);
+  padding: calc(var(--unit) * 0.075) calc(var(--unit) * 0.06);
+  border-radius: var(--radius-card);
+  background: linear-gradient(150deg, var(--glass-bg-strong) 0%, var(--glass-bg) 60%);
+  border: 1.5px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: calc(var(--unit) * 0.03);
+  z-index: 5;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+
+.glass-card__glow {
+  position: absolute;
+  inset: -18% -18%;
+  border-radius: inherit;
+  background: radial-gradient(closest-side, var(--glow-red) 0%, transparent 72%);
+  filter: blur(20px);
+  z-index: -1;
+  opacity: 0.55;
+}
+
+.glass-card__icon-wrap {
+  width: calc(var(--unit) * 0.22);
+  height: calc(var(--unit) * 0.22);
+  border-radius: var(--radius-icon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, rgba(255, 30, 50, 0.28), rgba(255, 30, 50, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 40px 6px var(--glow-red-soft), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.glass-card__icon-wrap svg {
+  width: 54%;
+  height: 54%;
+  color: var(--c-white);
+  filter: drop-shadow(0 0 18px var(--glow-red));
+}
+
+.glass-card__title {
+  font-weight: var(--fw-black);
+  font-size: calc(var(--unit) * 0.088);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin: 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f2d3d7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-card__subtitle {
+  font-weight: var(--fw-medium);
+  font-size: calc(var(--unit) * 0.032);
+  letter-spacing: 0.02em;
+  color: var(--c-white-dim);
+  margin: 0;
+}
+
+/* Thin accent rule under the title, animated in via scaleX */
+.glass-card__rule {
+  width: calc(var(--unit) * 0.16);
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, transparent, var(--c-red), transparent);
+  transform: scaleX(0);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Like scene — icon bounce                                                */
+/* ---------------------------------------------------------------------- */
+.scene-like .glass-card__icon-wrap { transform-origin: 50% 85%; }
+
+/* ---------------------------------------------------------------------- */
+/* Comment scene — typing cursor                                          */
+/* ---------------------------------------------------------------------- */
+.comment-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--unit) * 0.01);
+}
+.comment-typing__cursor {
+  width: 3px;
+  height: calc(var(--unit) * 0.03);
+  background: var(--c-red);
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Subscribe scene — button, bell, expanding glow                         */
+/* ---------------------------------------------------------------------- */
+.subscribe-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--unit) * 0.014);
+  max-width: 100%;
+  padding: calc(var(--unit) * 0.026) calc(var(--unit) * 0.045);
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--c-red);
+  background: transparent;
+  color: var(--c-white);
+  font-family: var(--font-display);
+  font-weight: var(--fw-black);
+  font-size: calc(var(--unit) * 0.028);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  overflow: hidden;
+  isolation: isolate;
+}
+.subscribe-btn__fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--c-red-strong), var(--c-red));
+  transform: scaleX(0);
+  transform-origin: left center;
+  z-index: -1;
+}
+.subscribe-btn svg { width: calc(var(--unit) * 0.026); height: calc(var(--unit) * 0.026); }
+.subscribe-btn__icon { position: relative; width: calc(var(--unit) * 0.026); height: calc(var(--unit) * 0.026); flex-shrink: 0; }
+.subscribe-btn__icon svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.scene-subscribe .glass-card__icon-wrap { transform-origin: 50% 12%; }
+
+.subscribe-expand-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--unit) * 0.2);
+  height: calc(var(--unit) * 0.2);
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--glow-red) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Utility: motion blur applied transiently by JS during fast tweens */
+.mb-blur { filter: blur(0px); }
+
+/* Reduced motion: show a static, still-branded final frame */
+@media (prefers-reduced-motion: reduce) {
+  .intro-stage * { animation: none !important; transition: none !important; }
+}
