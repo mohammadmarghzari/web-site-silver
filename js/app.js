@@ -60,7 +60,7 @@
   /* ---------- حالت فریم (ویدیوی واقعی) ---------- */
   const frames = [];
   let framesLoaded = 0;
-  const IMAGE_SCALE = 0.9;   // حالت contain: ویدیو کامل و بدون بزرگ‌نمایی بی‌کیفیت
+  const MAX_UPSCALE = 2.4;   // سقف بزرگ‌نمایی نسبت به رزولوشن واقعی فریم (جلوگیری از افت کیفیت)
   let sampledBg = "#0D0D0F";
 
   function sampleBgColor(img) {
@@ -74,12 +74,12 @@
     } catch (_) { /* CORS-safe fallback */ }
   }
 
-  function drawContainImage(img, alpha) {
+  function drawCoverImage(img, alpha) {
     const cw = canvas.width, ch = canvas.height;
     const iw = img.naturalWidth, ih = img.naturalHeight;
-    // contain: کل قاب دیده می‌شود و ویدیو بیش از اندازه بزرگ (و پیکسلی) نمی‌شود
-    let scale = Math.min(cw / iw, ch / ih) * IMAGE_SCALE;
-    scale = Math.min(scale, 1.25 * dpr);   // سقف بزرگ‌نمایی برای حفظ کیفیت
+    // cover: کل صفحه لبه‌به‌لبه پر می‌شود — بدون حاشیه یا «کادر» دور ویدیو
+    let scale = Math.max(cw / iw, ch / ih);
+    scale = Math.min(scale, MAX_UPSCALE);   // سقف بزرگ‌نمایی برای حفظ کیفیت
     const dw = iw * scale, dh = ih * scale;
     ctx.globalAlpha = alpha;
     ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
@@ -97,10 +97,10 @@
     const cw = canvas.width, ch = canvas.height;
     ctx.fillStyle = sampledBg;
     ctx.fillRect(0, 0, cw, ch);
-    drawContainImage(imgA, 1);
+    drawCoverImage(imgA, 1);
     const imgB = frames[hi];
     if (hi !== lo && frac > 0.01 && imgB && imgB.naturalWidth) {
-      drawContainImage(imgB, frac);
+      drawCoverImage(imgB, frac);
     }
   }
 
