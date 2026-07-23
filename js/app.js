@@ -312,7 +312,9 @@
   const overlayEnter = statsSec ? statsSec.enter - 0.015 : 0.7;
   const overlayLeave = statsSec ? statsSec.leave + 0.005 : 0.8;
 
-  /* ---------- پیشرفت هیرو: محو هیرو + فید نرم ویدیو ---------- */
+  /* ---------- پیشرفت هیرو: محو هیرو + پارالاکس محصول + فید نرم ویدیو ---------- */
+  const heroVisual = document.querySelector(".hero-visual");
+  const heroCopy = document.querySelector(".hero-copy");
   ScrollTrigger.create({
     trigger: heroSection,
     start: "top top",
@@ -323,6 +325,15 @@
       heroSection.style.opacity = String(Math.max(0, 1 - p * 1.5));
       const fade = clamp01((p - 0.08) / 0.72);
       canvasWrap.style.opacity = (fade * fade * (3 - 2 * fade)).toFixed(3); // smoothstep
+
+      // پارالاکس: محصولِ شناور با اسکرول بالا می‌رود و کمی کوچک می‌شود
+      if (heroVisual && !reduceMotion) {
+        heroVisual.style.transform = `translateY(${(-p * 130).toFixed(1)}px) scale(${(1 - p * 0.1).toFixed(3)})`;
+      }
+      // متنِ هیرو کمی کندتر از محصول جابه‌جا می‌شود (عمق بصری)
+      if (heroCopy && !reduceMotion) {
+        heroCopy.style.transform = `translateY(${(-p * 70).toFixed(1)}px)`;
+      }
     }
   });
 
