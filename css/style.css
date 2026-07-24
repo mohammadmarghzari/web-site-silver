@@ -520,3 +520,104 @@ a.contact-value:hover { color: var(--silver-bright); }
   }
   .scroll-indicator svg { animation: none; }
 }
+
+
+/* ============================================================
+   گالری‌های محصول (دستساز / نقره روسی / نیم‌ست‌ها)
+   بخش‌های معمولیِ جریان صفحه، بعد از تجربه‌ی اسکرول سینمایی
+   ============================================================ */
+.gallery-section {
+  position: relative; z-index: 6;
+  background: var(--bg);
+  padding: clamp(3.5rem, 8vw, 7rem) 6vw;
+  border-top: 1px solid var(--line);
+}
+.gallery-inner { max-width: 1200px; margin: 0 auto; }
+.gallery-section .section-label { color: var(--champagne); }
+.gallery-section .section-heading { margin-bottom: .8rem; }
+.gallery-intro {
+  color: var(--muted);
+  font-size: clamp(.95rem, 1.6vw, 1.05rem);
+  line-height: 1.9;
+  max-width: 640px;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.pcard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: clamp(1.2rem, 2.4vw, 2rem);
+}
+
+.pcard {
+  display: flex; flex-direction: column;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform .5s var(--ease-lux), border-color .5s var(--ease-lux);
+}
+.pcard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(237, 237, 235, .28);
+}
+.pcard-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #0f0f11;
+  overflow: hidden;
+}
+.pcard-media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .6s var(--ease-lux);
+}
+.pcard:hover .pcard-media img { transform: scale(1.05); }
+
+.pcard-body {
+  display: flex; flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.1rem, 2vw, 1.5rem);
+  flex: 1;
+}
+.pcard-title {
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--ink);
+}
+.pcard-specs {
+  display: flex; flex-direction: column;
+  gap: .5rem; margin: 0;
+}
+.pcard-specs .spec {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  gap: .8rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px dashed var(--line);
+}
+.pcard-specs dt {
+  color: var(--muted);
+  font-size: .82rem;
+  white-space: nowrap;
+}
+.pcard-specs dd {
+  color: var(--silver);
+  font-size: .9rem; font-weight: 500;
+  margin: 0; text-align: left;
+}
+.pcard-cta {
+  margin-top: auto;
+  width: 100%;
+  padding: 12px 18px; min-height: 44px;
+  font-size: .84rem;
+}
+
+@media (max-width: 560px) {
+  .pcard-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .pcard-body { padding: 1rem .9rem; gap: .8rem; }
+  .pcard-title { font-size: 1rem; }
+}
+@media (max-width: 380px) {
+  .pcard-grid { grid-template-columns: 1fr; }
+}
