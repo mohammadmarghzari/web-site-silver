@@ -480,7 +480,7 @@ a.contact-value:hover { color: var(--silver-bright); }
   .hero-actions { margin-top: 1.6rem; }
   .hero-actions .cta-button { flex: 1 1 auto; }
   .hero-visual { min-height: 38vh; order: 2; }
-  .hero-product { width: min(230px, 56vw); margin-bottom: clamp(14px, 2.4vh, 30px); }
+  .hero-product { width: min(230px, 56vw); margin-bottom: clamp(40px, 8vh, 70px); }
   .pedestal { width: min(300px, 68vw); }
   .scroll-indicator { display: none; }
 
