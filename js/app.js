@@ -11,7 +11,7 @@
           (frame_0001.webp ... — طبق اسکیل video-to-website)
        2) FRAME_MODE را به "frames" تغییر دهید و FRAME_COUNT را تنظیم کنید */
   const FRAME_MODE = "frames";            // "procedural" | "frames"
-  const FRAME_COUNT = 240;
+  const FRAME_COUNT = 192;
   const FRAME_PATH = (i) => `frames/frame_${String(i + 1).padStart(4, "0")}.webp`;
   const FRAME_SPEED = 2.0;                // 1.8–2.2
 
@@ -61,7 +61,10 @@
   const frames = [];
   let framesLoaded = 0;
   const MAX_UPSCALE = 2.4;   // سقف بزرگ‌نمایی نسبت به رزولوشن واقعی فریم (جلوگیری از افت کیفیت)
+  const MIN_VISIBLE = 0.68;  // حداقل سهمی از هر بُعدِ فریم که نباید برش بخورد
   let sampledBg = "#0D0D0F";
+  const off = document.createElement("canvas");
+  const offCtx = off.getContext("2d");
 
   function sampleBgColor(img) {
     try {
@@ -71,19 +74,42 @@
       cc.drawImage(img, 0, 0, 8, 8);
       const d = cc.getImageData(0, 0, 2, 2).data;
       sampledBg = `rgb(${d[0]},${d[1]},${d[2]})`;
+      // پس‌زمینه‌ی لایه هم‌رنگِ پس‌زمینه‌ی خودِ ویدیو می‌شود تا لبه‌های محوشده درز نداشته باشند
+      if (canvasWrap) canvasWrap.style.background = sampledBg;
     } catch (_) { /* CORS-safe fallback */ }
   }
 
-  function drawCoverImage(img, alpha) {
+  /* محاسبه‌ی کادرِ ترسیم: cover است (لبه‌به‌لبه، بدون حاشیه)، اما اگر نسبتِ ویدیو با
+     نسبتِ صفحه خیلی فرق کند (مثلاً ویدیوی افقی روی موبایلِ عمودی) برشِ بیش از حد
+     جلوی دیده‌شدنِ محصول را می‌گیرد؛ پس مقیاس طوری محدود می‌شود که دست‌کم
+     MIN_VISIBLE از هر بُعدِ فریم در کادر بماند. */
+  function frameRect(iw, ih) {
     const cw = canvas.width, ch = canvas.height;
-    const iw = img.naturalWidth, ih = img.naturalHeight;
-    // cover: کل صفحه لبه‌به‌لبه پر می‌شود — بدون حاشیه یا «کادر» دور ویدیو
-    let scale = Math.max(cw / iw, ch / ih);
-    scale = Math.min(scale, MAX_UPSCALE);   // سقف بزرگ‌نمایی برای حفظ کیفیت
+    let scale = Math.min(Math.max(cw / iw, ch / ih), MAX_UPSCALE);
+    if (cw / (iw * scale) < MIN_VISIBLE) scale = cw / (iw * MIN_VISIBLE);
+    if (ch / (ih * scale) < MIN_VISIBLE) scale = ch / (ih * MIN_VISIBLE);
     const dw = iw * scale, dh = ih * scale;
-    ctx.globalAlpha = alpha;
-    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-    ctx.globalAlpha = 1;
+    return { x: (cw - dw) / 2, y: (ch - dh) / 2, w: dw, h: dh };
+  }
+
+  /* هر لبه‌ای از ویدیو که داخلِ صفحه بیفتد، به‌جای خطِ صاف (که مثل «کادر» دیده
+     می‌شود) به‌نرمی در پس‌زمینه محو می‌شود. */
+  function featherEdges(c, cx, r) {
+    const F = Math.max(24, Math.round(Math.min(c.width, c.height) * 0.14));
+    const fade = (x0, y0, x1, y1, rx, ry, rw, rh) => {
+      const g = cx.createLinearGradient(x0, y0, x1, y1);
+      g.addColorStop(0, "rgba(0,0,0,1)");
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      cx.fillStyle = g;
+      cx.fillRect(rx, ry, rw, rh);
+    };
+    cx.save();
+    cx.globalCompositeOperation = "destination-out";
+    if (r.y > 0.5) fade(0, r.y, 0, r.y + F, 0, r.y, c.width, F);
+    if (r.y + r.h < c.height - 0.5) fade(0, r.y + r.h, 0, r.y + r.h - F, 0, r.y + r.h - F, c.width, F);
+    if (r.x > 0.5) fade(r.x, 0, r.x + F, 0, r.x, 0, F, c.height);
+    if (r.x + r.w < c.width - 0.5) fade(r.x + r.w, 0, r.x + r.w - F, 0, r.x + r.w - F, 0, F, c.height);
+    cx.restore();
   }
 
   // floatIdx پیوسته است (نه عدد صحیح) — بین دو فریمِ مجاور ترکیبِ نرم (کراس‌فید)
@@ -95,13 +121,22 @@
     const imgA = frames[lo];
     if (!imgA || !imgA.naturalWidth) return;
     const cw = canvas.width, ch = canvas.height;
-    ctx.fillStyle = sampledBg;
-    ctx.fillRect(0, 0, cw, ch);
-    drawCoverImage(imgA, 1);
+    if (off.width !== cw || off.height !== ch) { off.width = cw; off.height = ch; }
+
+    // کراس‌فید روی کنواسِ کمکی انجام می‌شود تا محوِ لبه‌ها فقط یک‌بار اعمال شود
+    offCtx.clearRect(0, 0, cw, ch);
+    const r = frameRect(imgA.naturalWidth, imgA.naturalHeight);
+    offCtx.drawImage(imgA, r.x, r.y, r.w, r.h);
     const imgB = frames[hi];
     if (hi !== lo && frac > 0.01 && imgB && imgB.naturalWidth) {
-      drawCoverImage(imgB, frac);
+      offCtx.globalAlpha = frac;
+      offCtx.drawImage(imgB, r.x, r.y, r.w, r.h);
+      offCtx.globalAlpha = 1;
     }
+    featherEdges(off, offCtx, r);
+
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.drawImage(off, 0, 0);
   }
 
   function preloadFrames(onProgress, onDone) {
