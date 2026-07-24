@@ -286,6 +286,10 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
             <span class="contact-key">ایتا</span>
             <a class="contact-value" href="https://eitaa.com/silvershopIr" target="_blank" rel="noopener">silvershopIr@</a>
           </div>
+          <div class="contact-item">
+            <span class="contact-key">روبیکا</span>
+            <a class="contact-value" href="https://rubika.ir/null" target="_blank" rel="noopener">مشاهده صفحه</a>
+          </div>
         </div>
         <footer class="site-footer">
           <span class="latin">© SilvershopIR</span>
