@@ -520,3 +520,626 @@ a.contact-value:hover { color: var(--silver-bright); }
   }
   .scroll-indicator svg { animation: none; }
 }
+
+
+/* ============================================================
+   گالری‌های محصول (دستساز / نقره روسی / نیم‌ست‌ها)
+   بخش‌های معمولیِ جریان صفحه، بعد از تجربه‌ی اسکرول سینمایی
+   ============================================================ */
+.gallery-section {
+  position: relative; z-index: 6;
+  background: var(--bg);
+  padding: clamp(3.5rem, 8vw, 7rem) 6vw;
+  border-top: 1px solid var(--line);
+}
+.gallery-inner { max-width: 1200px; margin: 0 auto; }
+.gallery-section .section-label { color: var(--champagne); }
+.gallery-section .section-heading { margin-bottom: .8rem; }
+.gallery-intro {
+  color: var(--muted);
+  font-size: clamp(.95rem, 1.6vw, 1.05rem);
+  line-height: 1.9;
+  max-width: 640px;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.pcard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: clamp(1.2rem, 2.4vw, 2rem);
+}
+
+.pcard {
+  display: flex; flex-direction: column;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform .5s var(--ease-lux), border-color .5s var(--ease-lux);
+}
+.pcard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(237, 237, 235, .28);
+}
+.pcard-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #0f0f11;
+  overflow: hidden;
+}
+.pcard-media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .6s var(--ease-lux);
+}
+.pcard:hover .pcard-media img { transform: scale(1.05); }
+
+.pcard-body {
+  display: flex; flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.1rem, 2vw, 1.5rem);
+  flex: 1;
+}
+.pcard-title {
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--ink);
+}
+.pcard-specs {
+  display: flex; flex-direction: column;
+  gap: .5rem; margin: 0;
+}
+.pcard-specs .spec {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  gap: .8rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px dashed var(--line);
+}
+.pcard-specs dt {
+  color: var(--muted);
+  font-size: .82rem;
+  white-space: nowrap;
+}
+.pcard-specs dd {
+  color: var(--silver);
+  font-size: .9rem; font-weight: 500;
+  margin: 0; text-align: left;
+}
+.pcard-cta {
+  margin-top: auto;
+  width: 100%;
+  padding: 12px 18px; min-height: 44px;
+  font-size: .84rem;
+}
+
+@media (max-width: 560px) {
+  .pcard-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .pcard-body { padding: 1rem .9rem; gap: .8rem; }
+  .pcard-title { font-size: 1rem; }
+}
+@media (max-width: 380px) {
+  .pcard-grid { grid-template-columns: 1fr; }
+}
+/* ============================================================
+   SilvershopIR — فروشگاه زیورآلات نقره اصفهان
+   تم تیره پریمیوم + اسکرول سینمایی (RTL)
+   ============================================================ */
+
+/* ---------- فونت‌ها ----------
+   فونت اصلی: کلمه (Kalameh) — فایل‌های لایسنس‌دار را در
+   assets/fonts/kalameh/ با همین نام‌ها قرار دهید تا خودکار فعال شود.
+   جایگزین: وزیرمتن (محلی، بدون نیاز به اینترنت) */
+@font-face {
+  font-family: 'Kalameh';
+  src: url('../assets/fonts/kalameh/Kalameh-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('../assets/fonts/kalameh/Kalameh-Medium.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('../assets/fonts/kalameh/Kalameh-Bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('../assets/fonts/kalameh/Kalameh-Black.woff2') format('woff2');
+  font-weight: 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Italiana';
+  src: url('../assets/fonts/italiana/Italiana-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../assets/fonts/vazirmatn/Vazirmatn-Light.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../assets/fonts/vazirmatn/Vazirmatn-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../assets/fonts/vazirmatn/Vazirmatn-Medium.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../assets/fonts/vazirmatn/Vazirmatn-Bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../assets/fonts/vazirmatn/Vazirmatn-ExtraBold.woff2') format('woff2');
+  font-weight: 800 900; font-style: normal; font-display: swap;
+}
+
+/* ---------- توکن‌های طراحی ---------- */
+:root {
+  --bg: #0D0D0F;            /* مونوکرومِ ذغالی — بدون هیچ رنگ اکسنت */
+  --bg-2: #161618;
+  --panel: rgba(20, 20, 22, .82);
+  --ink: #F1F1EF;
+  --muted: #8F8F8C;
+  --silver: #C9CCD1;
+  --silver-bright: #EDEDEB;
+  --silver-dim: #8E9196;
+  --accent: #EDEDEB;        /* اکسنت = سفیدِ گرم — تم تک‌رنگ */
+  --accent-soft: rgba(237, 237, 235, .1);
+  --champagne: #9A9A96;     /* لیبل‌های ریز خاکستری */
+  --line: rgba(237, 237, 235, .14);
+  --font-fa: 'Kalameh', 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+  --font-latin: 'Italiana', 'Cormorant Garamond', Georgia, serif;
+  --ease-lux: cubic-bezier(.16, 1, .3, 1);
+  --header-h: 76px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: auto; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-fa);
+  font-size: 16px;
+  line-height: 1.9;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; cursor: pointer; }
+.latin { font-family: var(--font-latin); font-weight: 400; letter-spacing: .14em; direction: ltr; unicode-bidi: isolate; }
+.ltr { direction: ltr; unicode-bidi: isolate; }
+.muted { color: var(--muted); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection { background: var(--silver); color: var(--bg); }
+
+/* ---------- ۱. لودر ---------- */
+#loader {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 22px;
+  transition: opacity .7s var(--ease-lux), visibility .7s;
+}
+#loader.done { opacity: 0; visibility: hidden; }
+.loader-brand { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.loader-brand .latin { font-size: 1.7rem; color: var(--silver-bright); }
+.loader-brand .fa { font-size: .85rem; color: var(--muted); letter-spacing: .35em; margin-inline-start: .35em; }
+.loader-track { width: min(280px, 60vw); height: 1px; background: var(--line); overflow: hidden; }
+#loader-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--silver-bright)); }
+#loader-percent { font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* ---------- ۲. هدر ---------- */
+.site-header {
+  position: fixed; top: 0; right: 0; left: 0; z-index: 50;
+  height: var(--header-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4vw;
+  background: linear-gradient(180deg, rgba(13,12,11,.82), rgba(13,12,11,0));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.logo { display: flex; flex-direction: column; line-height: 1.25; min-height: 44px; justify-content: center; }
+.logo .latin { font-size: 1.25rem; color: var(--silver-bright); }
+.logo-sub { font-size: .68rem; color: var(--champagne); letter-spacing: .18em; }
+.site-header nav { display: flex; gap: 2.2vw; }
+.site-header nav a {
+  font-size: .92rem; color: var(--muted);
+  padding: 12px 6px; min-height: 44px; display: inline-flex; align-items: center;
+  transition: color .2s;
+  position: relative;
+}
+.site-header nav a::after {
+  content: ""; position: absolute; bottom: 8px; right: 6px; left: 6px; height: 1px;
+  background: var(--silver); transform: scaleX(0); transform-origin: right;
+  transition: transform .3s var(--ease-lux);
+}
+.site-header nav a:hover { color: var(--ink); }
+.site-header nav a:hover::after { transform: scaleX(1); }
+.header-side { display: flex; align-items: center; gap: 10px; }
+.music-toggle {
+  width: 44px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--line); border-radius: 0;
+  cursor: pointer;
+  transition: color .25s, border-color .25s, background .25s;
+}
+.music-toggle:hover { color: var(--ink); border-color: var(--silver-bright); }
+.music-toggle .ic-on { display: none; }
+.music-toggle .ic-off { display: block; }
+.music-toggle[aria-pressed="true"] { color: var(--ink); background: var(--accent-soft); }
+.music-toggle[aria-pressed="true"] .ic-on { display: block; }
+.music-toggle[aria-pressed="true"] .ic-off { display: none; }
+.header-cta {
+  font-size: .8rem; font-weight: 500; color: var(--ink); background: transparent;
+  padding: 11px 22px; border: 1px solid var(--line); border-radius: 0; min-height: 44px;
+  display: inline-flex; align-items: center;
+  transition: background .25s, color .25s, border-color .25s;
+}
+.header-cta:hover {
+  background: var(--silver-bright); color: #0D0D0F; border-color: var(--silver-bright);
+}
+
+/* ---------- ۳. هیرو (محصول‌محورِ مونوکروم) ---------- */
+.hero-standalone {
+  position: relative; z-index: 6;
+  min-height: 100vh; min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: calc(var(--header-h) + 2vh) 6vw 10vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 50% at 26% 60%, rgba(237, 237, 235, .05), transparent 65%),
+    linear-gradient(180deg, #101012 0%, var(--bg) 60%, #0A0A0C 100%);
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+  align-items: center;
+  gap: 4vw;
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
+}
+.section-label {
+  display: inline-block;
+  font-size: .74rem; font-weight: 500;
+  color: var(--champagne);
+  letter-spacing: .04em;
+  margin-bottom: 1.1rem;
+}
+.hero-display { display: flex; flex-direction: column; gap: .55rem; }
+.latin-display {
+  font-family: var(--font-latin);
+  font-weight: 400;
+  font-size: clamp(3rem, 5.6vw, 5.9rem);
+  line-height: .96;
+  letter-spacing: .08em;
+  color: var(--ink);
+  direction: ltr; unicode-bidi: isolate;
+  white-space: nowrap;
+}
+.fa-display {
+  font-size: clamp(1.25rem, 2.1vw, 1.9rem);
+  font-weight: 300;
+  color: var(--muted);
+}
+.hero-tagline {
+  margin-top: 1.5rem;
+  font-size: clamp(.9rem, 1.1vw, 1rem);
+  font-weight: 300;
+  line-height: 2.1;
+  color: var(--muted);
+  max-width: 26rem;
+}
+.hero-specs {
+  display: flex; gap: clamp(1.6rem, 3.5vw, 3.4rem);
+  margin-top: 2rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line);
+}
+.hero-specs > div { display: flex; flex-direction: column; gap: .35rem; }
+.spec-k { font-size: .7rem; color: var(--champagne); }
+.spec-v { font-size: .98rem; font-weight: 500; color: var(--ink); }
+.hero-actions { display: flex; align-items: center; gap: 14px; margin-top: 2.2rem; flex-wrap: wrap; }
+
+/* محصول شناور روی سکو */
+.hero-visual {
+  position: relative;
+  min-height: 58vh;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.pedestal {
+  position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(460px, 36vw);
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .35));
+}
+.hero-product {
+  position: relative; z-index: 2;
+  width: min(400px, 30vw);
+  margin-bottom: clamp(26px, 5vh, 56px);
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 22px 28px rgba(0, 0, 0, .5));
+  animation: float 7s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(-6.5deg) translateY(-14px); }
+}
+.scroll-indicator {
+  position: absolute; bottom: 4.5vh; right: 6vw;
+  display: flex; align-items: center; gap: 10px;
+  color: var(--muted); font-size: .74rem; letter-spacing: .04em;
+}
+.scroll-indicator svg { animation: nudge 1.8s var(--ease-lux) infinite; }
+@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+/* ---------- ۴. کنواس ---------- */
+.canvas-wrap {
+  position: fixed; inset: 0; z-index: 1;
+  opacity: 0;                    /* فید نرم با اسکرول — توسط JS کنترل می‌شود */
+  background: var(--bg);
+}
+#canvas { width: 100%; height: 100%; display: block; }
+/* اسکریم کناری/عمودی: خوانایی متن روی فریم‌های روشن ویدیو */
+.canvas-wrap::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(3, 8, 6, .88) 0%, rgba(3, 8, 6, .5) 22%, transparent 44%, transparent 56%, rgba(3, 8, 6, .5) 78%, rgba(3, 8, 6, .88) 100%),
+    linear-gradient(180deg, rgba(3, 8, 6, .5) 0%, transparent 16%, transparent 78%, rgba(3, 8, 6, .68) 100%);
+}
+
+/* ---------- ۵. روکش تیره ---------- */
+#dark-overlay {
+  position: fixed; inset: 0; z-index: 3;
+  background: rgba(8, 7, 6, .9);
+  opacity: 0; pointer-events: none;
+}
+
+/* ---------- ۶. مارکی ---------- */
+.marquee-wrap {
+  position: fixed; top: 50%; left: 0; right: 0; z-index: 2;
+  transform: translateY(-50%);
+  overflow: hidden; white-space: nowrap;
+  opacity: 0; pointer-events: none;
+}
+.marquee-text {
+  display: inline-block;
+  font-size: 12vw; font-weight: 900; line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(160, 220, 195, .24);
+  white-space: nowrap;
+  will-change: transform;
+}
+.marquee-text .latin { font-weight: 600; -webkit-text-stroke: 1px rgba(160, 220, 195, .24); }
+
+/* ---------- ۷. کانتینر اسکرول و بخش‌ها ---------- */
+#scroll-container {
+  position: relative; z-index: 4; height: 1000vh;
+  /* بچه‌های بخش‌های مخفی با ترنسفورم x اولیه، در RTL عرض سند را زیاد می‌کنند */
+  overflow-x: clip;
+}
+
+.scroll-section {
+  position: absolute; right: 0; left: 0;
+  transform: translateY(-50%);
+  visibility: hidden;               /* تا فعال‌شدن با JS */
+  pointer-events: none;
+}
+.scroll-section.is-active { visibility: visible; pointer-events: auto; }
+
+/* متن فقط در ناحیه‌های کناری — مرکز برای محصول (کنواس) آزاد می‌ماند */
+.align-right { padding-right: 6vw; padding-left: 56vw; }
+.align-left  { padding-left: 6vw;  padding-right: 56vw; }
+.align-right .section-inner, .align-left .section-inner { max-width: 38vw; }
+
+.section-heading {
+  font-size: clamp(2.1rem, 4.4vw, 4.4rem);
+  font-weight: 900; line-height: 1.2;
+  margin-bottom: 1.1rem;
+  text-shadow: 0 2px 26px rgba(0, 0, 0, .6);
+}
+.section-body { text-shadow: 0 1px 14px rgba(0, 0, 0, .55); }
+.heading-xl { font-size: clamp(2.6rem, 6vw, 6rem); }
+.section-body {
+  font-size: clamp(.95rem, 1.15vw, 1.1rem);
+  font-weight: 300;
+  color: var(--muted);
+  margin-bottom: .9rem;
+  max-width: 30rem;
+}
+.section-figure {
+  margin: 1.2rem 0 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.product-figure {
+  width: min(250px, 21vw);
+  margin: .4rem 0 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  background: #F2F1EE;   /* کارت روشن برای عکس‌های واقعی محصول */
+  box-shadow: 0 18px 44px -18px rgba(0, 0, 0, .55);
+}
+/* عکس محصول با فید نرم از اوپسیتی پایین لود می‌شود */
+.product-figure img {
+  opacity: .08;
+  transition: opacity 1.6s var(--ease-lux);
+}
+.product-figure img.img-loaded { opacity: 1; }
+
+.cta-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  margin-top: .6rem;
+  padding: 15px 36px; min-height: 50px;
+  font-family: var(--font-fa); font-size: .88rem; font-weight: 500;
+  color: #0D0D0F; background: var(--silver-bright);
+  border: 1px solid var(--silver-bright); border-radius: 0; cursor: pointer;
+  transition: background .25s, color .25s, border-color .25s, transform .25s var(--ease-lux);
+}
+.cta-button:hover {
+  background: #FFFFFF; border-color: #FFFFFF;
+  transform: translateY(-2px);
+}
+.cta-button.ghost {
+  color: var(--ink); background: transparent;
+  border: 1px solid var(--line);
+}
+.cta-button.ghost:hover { border-color: var(--silver-bright); background: var(--accent-soft); transform: translateY(-2px); }
+
+/* ---------- آمار ---------- */
+.section-stats { z-index: 5; padding: 0 6vw; }
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 3vw; max-width: 1100px; margin: 0 auto;
+  text-align: center;
+}
+.stat { display: flex; flex-direction: column; gap: .4rem; }
+.stat-row { display: inline-flex; align-items: baseline; justify-content: center; direction: ltr; }
+.stat-number {
+  font-size: clamp(2.6rem, 6vw, 5.2rem);
+  font-weight: 900; line-height: 1;
+  color: var(--silver-bright);
+  font-variant-numeric: tabular-nums;
+}
+.stat-suffix { font-size: clamp(1.2rem, 2.4vw, 2rem); color: var(--champagne); font-weight: 700; }
+.stat-label { font-size: .9rem; color: var(--muted); letter-spacing: .12em; }
+
+/* ---------- فرم ---------- */
+#consult-form { margin-top: 1rem; display: flex; flex-direction: column; gap: 10px; max-width: 30rem; }
+.form-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-row { display: flex; flex-direction: column; gap: 6px; }
+.form-row label { font-size: .82rem; color: var(--champagne); letter-spacing: .06em; }
+.form-row input, .form-row select, .form-row textarea {
+  font-family: var(--font-fa); font-size: .95rem; font-weight: 300;
+  color: var(--ink); background: rgba(22, 19, 17, .6);
+  border: 1px solid var(--line); border-radius: 2px;
+  padding: 12px 14px; min-height: 48px;
+  transition: border-color .2s, background .2s;
+}
+.form-row textarea { min-height: 90px; resize: vertical; }
+.form-row input::placeholder, .form-row textarea::placeholder { color: rgba(163, 155, 144, .55); }
+.form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+  outline: none; border-color: var(--accent);
+  background: rgba(11, 21, 18, .92);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.form-row select { appearance: none; cursor: pointer; }
+.form-error { border-color: #C4574F !important; }
+
+/* ---------- تماس (بخش پایانی ماندگار) ---------- */
+.section-contact { z-index: 5; padding: 0 6vw; }
+.contact-panel {
+  max-width: 900px; margin: 0 auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: clamp(1.8rem, 4vw, 3.4rem);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  text-align: center;
+}
+.contact-panel .section-heading { margin-bottom: 2rem; }
+.contact-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.6rem 2.5rem; text-align: right;
+  border-top: 1px solid var(--line);
+  padding-top: 2rem;
+}
+.contact-item { display: flex; flex-direction: column; gap: .3rem; }
+.contact-address { grid-column: span 2; }
+.contact-key { font-size: .75rem; color: var(--champagne); letter-spacing: .2em; }
+.contact-value { font-size: 1.05rem; font-weight: 500; font-style: normal; color: var(--ink); }
+a.contact-value { min-height: 44px; display: inline-flex; align-items: center; transition: color .2s; }
+a.contact-value:hover { color: var(--silver-bright); }
+.site-footer {
+  margin-top: 2.4rem; padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem;
+  font-size: .8rem; color: var(--muted);
+}
+
+/* ---------- ریسپانسیو ---------- */
+@media (max-width: 1023px) {
+  .align-right .section-inner, .align-left .section-inner { max-width: 44vw; }
+  .align-right { padding-left: 50vw; }
+  .align-left { padding-right: 50vw; }
+}
+
+@media (max-width: 767px) {
+  #scroll-container { height: 620vh; }
+
+  .site-header { padding: 0 5vw; }
+  .site-header nav { display: none; }
+  .logo .latin { font-size: 1.05rem; }
+  .header-cta { font-size: .78rem; padding: 10px 16px; }
+
+  .hero-standalone { padding: calc(var(--header-h) + 3vh) 6vw 12vh; justify-content: flex-start; }
+  .hero-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+  .latin-display { font-size: clamp(2.5rem, 12.5vw, 3.4rem); letter-spacing: .07em; }
+  .fa-display { font-size: 1.05rem; }
+  .hero-specs { gap: 1.6rem; padding-top: 1.2rem; margin-top: 1.4rem; }
+  .hero-actions { margin-top: 1.6rem; }
+  .hero-actions .cta-button { flex: 1 1 auto; }
+  .hero-visual { min-height: 38vh; order: 2; }
+  .hero-product { width: min(230px, 56vw); margin-bottom: clamp(14px, 2.4vh, 30px); }
+  .pedestal { width: min(300px, 68vw); }
+  .scroll-indicator { display: none; }
+
+  /* متن وسط‌چین با پس‌زمینه تیره — طبق قواعد موبایل اسکیل */
+  .align-right, .align-left { padding: 0 6vw; }
+  .align-right .section-inner, .align-left .section-inner {
+    max-width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 1.5rem 1.3rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    text-align: center;
+  }
+  .section-body { margin-inline: auto; }
+  .product-figure { width: min(200px, 46vw); margin-inline: auto; }
+  .section-figure { max-height: 34vh; }
+  .section-figure img { height: 100%; object-fit: cover; }
+  #consult-form { text-align: right; margin-inline: auto; }
+  .form-pair { grid-template-columns: 1fr; }
+
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem 1rem; }
+  .contact-grid { grid-template-columns: 1fr; text-align: center; }
+  .contact-address { grid-column: auto; }
+  .contact-item { align-items: center; }
+  .site-footer { justify-content: center; text-align: center; }
+  .marquee-text { font-size: 19vw; }
+}
+
+/* ---------- کاهش حرکت ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .scroll-indicator svg { animation: none; }
+}
