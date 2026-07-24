@@ -267,7 +267,7 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
             <a class="contact-value ltr" href="tel:+<?php echo esc_attr( SILVERSHOP_WHATSAPP ); ?>">0992 316 6200</a>
           </div>
           <div class="contact-item">
-            <span class="contact-key">واتساپ</span>
+            <span class="contact-key">واتساپ · پشتیبانی و مشاوره</span>
             <a class="contact-value" href="https://wa.me/<?php echo esc_attr( SILVERSHOP_WHATSAPP ); ?>" target="_blank" rel="noopener">ارسال پیام مستقیم</a>
           </div>
           <div class="contact-item contact-address">
@@ -276,7 +276,15 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
           </div>
           <div class="contact-item">
             <span class="contact-key">اینستاگرام</span>
-            <span class="contact-value muted">به‌زودی</span>
+            <a class="contact-value" href="https://instagram.com/silvershopir" target="_blank" rel="noopener">silvershopir@</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-key">تلگرام</span>
+            <a class="contact-value" href="https://t.me/silvershopIR1" target="_blank" rel="noopener">silvershopIR1@</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-key">ایتا</span>
+            <a class="contact-value" href="https://eitaa.com/silvershopIr" target="_blank" rel="noopener">silvershopIr@</a>
           </div>
         </div>
         <footer class="site-footer">
