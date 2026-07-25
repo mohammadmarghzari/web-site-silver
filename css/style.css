@@ -292,24 +292,7 @@ a { color: inherit; text-decoration: none; cursor: pointer; }
   opacity: 0; pointer-events: none;
 }
 
-/* ---------- ۶. مارکی ---------- */
-.marquee-wrap {
-  position: fixed; top: 50%; left: 0; right: 0; z-index: 2;
-  transform: translateY(-50%);
-  overflow: hidden; white-space: nowrap;
-  opacity: 0; pointer-events: none;
-}
-.marquee-text {
-  display: inline-block;
-  font-size: 12vw; font-weight: 900; line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(160, 220, 195, .24);
-  white-space: nowrap;
-  will-change: transform;
-}
-.marquee-text .latin { font-weight: 600; -webkit-text-stroke: 1px rgba(160, 220, 195, .24); }
-
-/* ---------- ۷. کانتینر اسکرول و بخش‌ها ---------- */
+/* ---------- ۶. کانتینر اسکرول و بخش‌ها ---------- */
 #scroll-container {
   position: relative; z-index: 4; height: 1000vh;
   /* بچه‌های بخش‌های مخفی با ترنسفورم x اولیه، در RTL عرض سند را زیاد می‌کنند */
@@ -508,7 +491,6 @@ a.contact-value:hover { color: var(--silver-bright); }
   .contact-address { grid-column: auto; }
   .contact-item { align-items: center; }
   .site-footer { justify-content: center; text-align: center; }
-  .marquee-text { font-size: 19vw; }
 }
 
 /* ---------- کاهش حرکت ---------- */

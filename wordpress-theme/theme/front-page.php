@@ -108,12 +108,7 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
   <!-- ۵. روکش تیره برای بخش آمار -->
   <div id="dark-overlay" aria-hidden="true"></div>
 
-  <!-- ۶. مارکی متن بزرگ -->
-  <div class="marquee-wrap" aria-hidden="true">
-    <div class="marquee-text"><span class="latin">SilvershopIR</span> · نقره ۹۲۵ · دست‌سازِ اصفهان · <span class="latin">SilvershopIR</span> · نقره ۹۲۵ · دست‌سازِ اصفهان ·</div>
-  </div>
-
-  <!-- ۷. کانتینر اسکرول -->
+  <!-- ۶. کانتینر اسکرول -->
   <div id="scroll-container">
 
     <!-- تصویر پایه -->

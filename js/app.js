@@ -57,8 +57,6 @@
   const heroSection = document.getElementById("hero");
   const scrollContainer = document.getElementById("scroll-container");
   const overlay = document.getElementById("dark-overlay");
-  const marqueeWrap = document.querySelector(".marquee-wrap");
-  const marqueeText = document.querySelector(".marquee-text");
 
   /* ---------- کنواس: اندازه و DPR ---------- */
   let dpr = 1;
@@ -453,21 +451,7 @@
       else if (p >= overlayEnter && p <= overlayLeave) op = 1;
       else if (p > overlayLeave && p <= overlayLeave + fade) op = 1 - (p - overlayLeave) / fade;
       overlay.style.opacity = (op * 0.9).toFixed(3);
-
-      // مارکی: نمایان در میانه مسیر
-      let mOp = 0;
-      if (p > 0.24 && p < 0.30) mOp = (p - 0.24) / 0.06;
-      else if (p >= 0.30 && p <= 0.62) mOp = 1;
-      else if (p > 0.62 && p < 0.68) mOp = 1 - (p - 0.62) / 0.06;
-      marqueeWrap.style.opacity = (mOp * 0.55).toFixed(3);
     }
-  });
-
-  /* ---------- حرکت مارکی ---------- */
-  gsap.fromTo(marqueeText, { xPercent: -4 }, {
-    xPercent: 26,
-    ease: "none",
-    scrollTrigger: { trigger: scrollContainer, start: "top top", end: "bottom bottom", scrub: true }
   });
 
   /* ---------- ناوبری هدر ---------- */
