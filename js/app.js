@@ -13,7 +13,11 @@
   const FRAME_MODE = "frames";            // "procedural" | "frames"
   const FRAME_COUNT = 192;
   const FRAME_PATH = (i) => `frames/frame_${String(i + 1).padStart(4, "0")}.webp`;
-  const FRAME_SPEED = 2.0;                // 1.8–2.2
+  const FRAME_SPEED = 2.0;                // فقط برای حالت رویه‌ای
+  /* سرعت چرخش بر حسبِ پیکسلِ واقعیِ اسکرول (نه درصدِ صفحه) — چون ارتفاعِ کانتینر در
+     دسکتاپ ۱۰۰۰vh و در موبایل ۶۲۰vh است، درصد باعث می‌شد چرخش در دسکتاپ نصفِ سرعت
+     باشد و تقریباً ثابت به‌نظر برسد. عدد کوچک‌تر = چرخشِ سریع‌تر. */
+  const PX_PER_FRAME = 12;
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -25,6 +29,14 @@
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
   const lerp = (a, b, t) => a + (b - a) * t;
   const smoothstep = (t) => t * t * (3 - 2 * t);
+  /* رفت‌وبرگشت روی بازه‌ی ۰..n — چرخش هیچ‌وقت روی آخرین فریم قفل نمی‌شود و چون
+     در دو سرِ بازه جهت عوض می‌شود، هیچ پرشی هم ندارد (فریم اول و آخرِ این ویدیو
+     به هم نمی‌چسبند، پس حلقه‌ی ساده پرش می‌داد). */
+  const pingPong = (x, n) => {
+    const period = 2 * n;
+    const m = ((x % period) + period) % period;
+    return m <= n ? m : period - m;
+  };
 
   /* ---------- Lenis ---------- */
   const lenis = new Lenis({
@@ -402,7 +414,9 @@
       // فریم ویدیو / چرخش رویه‌ای
       const accel = clamp01(p * FRAME_SPEED);
       if (FRAME_MODE === "frames") {
-        const target = accel * (FRAME_COUNT - 1);
+        // پیکسلِ واقعیِ پیمایش‌شده — سرعتِ چرخش در همه‌ی اندازه‌ها یکسان می‌ماند
+        const px = p * Math.max(1, scrollContainer.offsetHeight - window.innerHeight);
+        const target = pingPong(px / PX_PER_FRAME, FRAME_COUNT - 1);
         if (Math.abs(target - currentFrame) > 0.01) {
           currentFrame = target;
           requestAnimationFrame(drawCurrent);
