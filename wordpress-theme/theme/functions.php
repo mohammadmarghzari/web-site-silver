@@ -8,7 +8,9 @@ add_theme_support( 'post-thumbnails' );
 add_action( 'wp_enqueue_scripts', function () {
 
 	// فونت‌ها و توکن‌های طراحی (همان فایل سایتِ اصلی، بدون تغییر)
-	wp_enqueue_style( 'silvershop-main', get_site_url( null, '/css/style.css' ), array(), '1.0.0' );
+	// لایه‌ی توکن‌ها باید پیش از استایل اصلی بیاید — همه‌ی مقادیر از آن خوانده می‌شود
+	wp_enqueue_style( 'silvershop-tokens', get_site_url( null, '/css/tokens.css' ), array(), '1.1.0' );
+	wp_enqueue_style( 'silvershop-main', get_site_url( null, '/css/style.css' ), array( 'silvershop-tokens' ), '1.1.0' );
 
 	if ( is_front_page() ) {
 		// موتور اسکرول سینمایی فقط در صفحه‌ی اصلی لازم است

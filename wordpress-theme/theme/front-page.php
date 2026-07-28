@@ -39,6 +39,8 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
   <title>SilvershopIR — فروشگاه زیورآلات نقره اصفهان</title>
   <meta name="description" content="فروشگاه زیورآلات نقره ۹۲۵ در اصفهان — انگشتر مردانه، انگشتر زنانه و نیم‌ست زنانه. مجموعه نقش جهان، اتوبان چمران.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23C9CCD1' stroke-width='4'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#0D0D0F">
+  <script>document.documentElement.classList.add('js');</script>
   <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

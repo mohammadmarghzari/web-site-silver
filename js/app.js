@@ -305,7 +305,22 @@
     gsap.from(".scroll-indicator", { opacity: 0, duration: 1, delay: 1 });
   }
 
-  /* ---------- بخش‌های اسکرولی ---------- */
+  /* ---------- بخش‌های اسکرولی ----------
+     هر بخش یک «حالتِ ورود» دارد. مقصدِ همه‌ی آن‌ها REST_STATE است. */
+  const ENTRANCES = {
+    "slide-left":  { from: { x: -80, opacity: 0 },                     stagger: 0.12, duration: 0.9, ease: "power3.out" },
+    "slide-right": { from: { x: 80, opacity: 0 },                      stagger: 0.12, duration: 0.9, ease: "power3.out" },
+    "scale-up":    { from: { scale: 0.85, opacity: 0 },                stagger: 0.11, duration: 1.0, ease: "power2.out" },
+    "rotate-in":   { from: { y: 40, rotation: 3, opacity: 0 },         stagger: 0.10, duration: 0.9, ease: "power3.out" },
+    "stagger-up":  { from: { y: 60, opacity: 0 },                      stagger: 0.14, duration: 0.8, ease: "power3.out" },
+    "clip-reveal": { from: { clipPath: "inset(100% 0 0 0)", opacity: 0 }, stagger: 0.13, duration: 1.0, ease: "power4.inOut" },
+    "fade-up":     { from: { y: 50, opacity: 0 },                      stagger: 0.11, duration: 0.9, ease: "power3.out" },
+  };
+  const REST_STATE = {
+    x: 0, y: 0, scale: 1, rotation: 0, opacity: 1,
+    clipPath: "inset(0% 0 0 0)",
+  };
+
   const sections = Array.from(document.querySelectorAll(".scroll-section"));
   const sectionData = sections.map((el) => {
     const enter = parseFloat(el.dataset.enter) / 100;
@@ -315,22 +330,12 @@
       ".section-label, .product-figure, .section-figure, .section-heading, .section-body, .form-row, .cta-button, .stat"
     );
     const tl = gsap.timeline({ paused: true });
-    switch (el.dataset.animation) {
-      case "slide-left":
-        tl.from(children, { x: -80, opacity: 0, stagger: 0.12, duration: 0.9, ease: "power3.out" }); break;
-      case "slide-right":
-        tl.from(children, { x: 80, opacity: 0, stagger: 0.12, duration: 0.9, ease: "power3.out" }); break;
-      case "scale-up":
-        tl.from(children, { scale: 0.85, opacity: 0, stagger: 0.11, duration: 1.0, ease: "power2.out" }); break;
-      case "rotate-in":
-        tl.from(children, { y: 40, rotation: 3, opacity: 0, stagger: 0.1, duration: 0.9, ease: "power3.out" }); break;
-      case "stagger-up":
-        tl.from(children, { y: 60, opacity: 0, stagger: 0.14, duration: 0.8, ease: "power3.out" }); break;
-      case "clip-reveal":
-        tl.from(children, { clipPath: "inset(100% 0 0 0)", opacity: 0, stagger: 0.13, duration: 1.0, ease: "power4.inOut" }); break;
-      default: // fade-up
-        tl.from(children, { y: 50, opacity: 0, stagger: 0.11, duration: 0.9, ease: "power3.out" });
-    }
+    const spec = ENTRANCES[el.dataset.animation] || ENTRANCES["fade-up"];
+    // fromTo — نه from: مقصد صریح نوشته می‌شود تا مقدارِ پایانی به «حالتِ فعلیِ
+    // عنصر هنگام ساخت» وابسته نباشد (که باعث می‌شد آخرین عنصر سرِ جایش برنگردد).
+    const toVars = { stagger: spec.stagger, duration: spec.duration, ease: spec.ease };
+    for (const prop of Object.keys(spec.from)) toVars[prop] = REST_STATE[prop];
+    tl.fromTo(children, spec.from, toVars);
     return {
       el, tl,
       enter, leave,
@@ -471,6 +476,66 @@
     });
   });
 
+  /* ---------- تعاملات ظریف ----------
+     همه چیز فقط با transform و opacity — بدون جابه‌جاییِ چیدمان.
+     روی دستگاه‌های لمسی و در حالتِ کاهشِ حرکت، هیچ‌کدام فعال نمی‌شوند. */
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  // ظاهرشدنِ تدریجیِ بخش‌های عادیِ صفحه (گالری‌ها) — یک‌بار برای هر عنصر
+  const revealTargets = document.querySelectorAll("[data-reveal]");
+  if (revealTargets.length) {
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      revealTargets.forEach((el) => el.classList.add("is-revealed"));
+    } else {
+      const io = new IntersectionObserver((entries, obs) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.add("is-revealed");
+          obs.unobserve(e.target);
+        }
+      }, { rootMargin: "0px 0px -10% 0px", threshold: 0.15 });
+      revealTargets.forEach((el) => io.observe(el));
+    }
+  }
+
+  if (finePointer && !reduceMotion) {
+    // دکمه‌ی مغناطیسی: کمی به سمت نشانگر کشیده می‌شود
+    const MAGNET = 6;
+    document.querySelectorAll(".cta-button").forEach((btn) => {
+      btn.addEventListener("pointermove", (e) => {
+        const r = btn.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+        const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+        btn.style.setProperty("--mag-x", `${(dx * MAGNET).toFixed(1)}px`);
+        btn.style.setProperty("--mag-y", `${(dy * MAGNET).toFixed(1)}px`);
+      });
+      btn.addEventListener("pointerleave", () => {
+        btn.style.removeProperty("--mag-x");
+        btn.style.removeProperty("--mag-y");
+      });
+    });
+
+    // عمقِ عکسِ محصول: تصویر خلافِ جهتِ نشانگر می‌لغزد و حسِ لایه می‌دهد
+    const DEPTH = 10;
+    document.querySelectorAll(".pcard-media").forEach((media) => {
+      const img = media.querySelector("img");
+      if (!img) return;
+      media.addEventListener("pointerenter", () => media.classList.add("is-tracking"));
+      media.addEventListener("pointermove", (e) => {
+        const r = media.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+        const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+        img.style.setProperty("--img-x", `${(-dx * DEPTH).toFixed(1)}px`);
+        img.style.setProperty("--img-y", `${(-dy * DEPTH).toFixed(1)}px`);
+      });
+      media.addEventListener("pointerleave", () => {
+        media.classList.remove("is-tracking");
+        img.style.removeProperty("--img-x");
+        img.style.removeProperty("--img-y");
+      });
+    });
+  }
+
   /* ---------- نمایشگر عکس محصول (لایت‌باکس) ---------- */
   const lightbox = document.getElementById("lightbox");
   if (lightbox) {
@@ -483,14 +548,48 @@
     let index = 0;
     let opener = null;
 
-    const show = (i) => {
+    const stage = lightbox.querySelector(".lightbox-stage");
+
+    const clearZoom = () => {
+      stage.classList.remove("is-zoomed");
+      lbImg.style.removeProperty("--zx");
+      lbImg.style.removeProperty("--zy");
+    };
+
+    // تعویضِ عکس با محوِ متقابل — عکسِ بعدی پیش از نمایش آماده می‌شود تا پرش نداشته باشد
+    const show = (i, instant) => {
       index = (i + shots.length) % shots.length;
-      lbImg.src = shots[index];
-      lbImg.alt = `${lbTitle.textContent} — عکس ${index + 1} از ${shots.length}`;
+      const src = shots[index];
       lbDots.querySelectorAll("button").forEach((d, n) => {
         d.setAttribute("aria-current", n === index ? "true" : "false");
       });
+      const apply = () => {
+        clearZoom();
+        lbImg.src = src;
+        lbImg.alt = `${lbTitle.textContent} — عکس ${index + 1} از ${shots.length}`;
+        stage.classList.remove("is-swapping");
+      };
+      if (instant || reduceMotion) { apply(); return; }
+      stage.classList.add("is-swapping");
+      const pre = new Image();
+      pre.onload = pre.onerror = () => setTimeout(apply, 180);
+      pre.src = src;
     };
+
+    // بزرگ‌نماییِ جزئیات — با کلیک روشن می‌شود و با حرکتِ نشانگر قاب می‌گیرد
+    stage.addEventListener("click", (e) => {
+      if (e.target.closest(".lightbox-nav")) return;
+      stage.classList.toggle("is-zoomed");
+      if (!stage.classList.contains("is-zoomed")) clearZoom();
+    });
+    stage.addEventListener("pointermove", (e) => {
+      if (!stage.classList.contains("is-zoomed")) return;
+      const r = stage.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+      const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+      lbImg.style.setProperty("--zx", `${(-dx * 14).toFixed(1)}%`);
+      lbImg.style.setProperty("--zy", `${(-dy * 14).toFixed(1)}%`);
+    });
 
     const open = (btn) => {
       shots = (btn.dataset.images || "").split("|").filter(Boolean);
@@ -509,7 +608,7 @@
       const many = shots.length > 1;
       lbPrev.hidden = lbNext.hidden = !many;
       lbDots.hidden = !many;
-      show(0);
+      show(0, true);        // عکس نخست بدون محوِ متقابل
       lightbox.hidden = false;
       lenis.stop();                       // اسکرول پس‌زمینه قفل شود
       requestAnimationFrame(() => lightbox.classList.add("is-open"));
@@ -518,6 +617,7 @@
 
     const close = () => {
       lightbox.classList.remove("is-open");
+      clearZoom();
       lenis.start();
       const done = () => { lightbox.hidden = true; lbImg.removeAttribute("src"); };
       if (reduceMotion) done();
