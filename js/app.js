@@ -471,6 +471,86 @@
     });
   });
 
+  /* ---------- نمایشگر عکس محصول (لایت‌باکس) ---------- */
+  const lightbox = document.getElementById("lightbox");
+  if (lightbox) {
+    const lbImg = document.getElementById("lightbox-img");
+    const lbTitle = document.getElementById("lightbox-title");
+    const lbDots = document.getElementById("lightbox-dots");
+    const lbPrev = lightbox.querySelector(".lightbox-prev");
+    const lbNext = lightbox.querySelector(".lightbox-next");
+    let shots = [];
+    let index = 0;
+    let opener = null;
+
+    const show = (i) => {
+      index = (i + shots.length) % shots.length;
+      lbImg.src = shots[index];
+      lbImg.alt = `${lbTitle.textContent} — عکس ${index + 1} از ${shots.length}`;
+      lbDots.querySelectorAll("button").forEach((d, n) => {
+        d.setAttribute("aria-current", n === index ? "true" : "false");
+      });
+    };
+
+    const open = (btn) => {
+      shots = (btn.dataset.images || "").split("|").filter(Boolean);
+      if (!shots.length) return;
+      opener = btn;
+      lbTitle.textContent = btn.dataset.title || "";
+      lbDots.innerHTML = "";
+      shots.forEach((_, n) => {
+        const d = document.createElement("button");
+        d.type = "button";
+        d.setAttribute("aria-label", `عکس ${n + 1}`);
+        d.addEventListener("click", () => show(n));
+        lbDots.appendChild(d);
+      });
+      // با یک عکس، پیمایش معنایی ندارد
+      const many = shots.length > 1;
+      lbPrev.hidden = lbNext.hidden = !many;
+      lbDots.hidden = !many;
+      show(0);
+      lightbox.hidden = false;
+      lenis.stop();                       // اسکرول پس‌زمینه قفل شود
+      requestAnimationFrame(() => lightbox.classList.add("is-open"));
+      lightbox.querySelector(".lightbox-close").focus();
+    };
+
+    const close = () => {
+      lightbox.classList.remove("is-open");
+      lenis.start();
+      const done = () => { lightbox.hidden = true; lbImg.removeAttribute("src"); };
+      if (reduceMotion) done();
+      else setTimeout(done, 300);
+      if (opener) { opener.focus(); opener = null; }
+    };
+
+    document.querySelectorAll("button.pcard-media[data-images]").forEach((btn) => {
+      btn.addEventListener("click", () => open(btn));
+    });
+    lightbox.querySelectorAll("[data-lightbox-close]").forEach((el) => {
+      el.addEventListener("click", close);
+    });
+    lbPrev.addEventListener("click", () => show(index - 1));
+    lbNext.addEventListener("click", () => show(index + 1));
+
+    document.addEventListener("keydown", (e) => {
+      if (lightbox.hidden) return;
+      if (e.key === "Escape") close();
+      // چیدمان راست‌به‌چپ: فلشِ چپ یعنی «بعدی»
+      else if (e.key === "ArrowLeft") show(index + 1);
+      else if (e.key === "ArrowRight") show(index - 1);
+      else if (e.key === "Tab") {
+        // فوکوس داخل پنجره بماند
+        const items = [...lightbox.querySelectorAll("button")].filter((b) => !b.hidden && b.offsetParent);
+        if (!items.length) return;
+        const first = items[0], last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+  }
+
   /* ---------- فرم مشاوره → واتساپ ---------- */
   const form = document.getElementById("consult-form");
   form.addEventListener("submit", (e) => {
