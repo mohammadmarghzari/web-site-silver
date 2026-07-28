@@ -294,7 +294,7 @@ a { color: inherit; text-decoration: none; cursor: pointer; }
 
 /* ---------- ۶. کانتینر اسکرول و بخش‌ها ---------- */
 #scroll-container {
-  position: relative; z-index: 4; height: 1000vh;
+  position: relative; z-index: 4; height: 780vh;
   /* بچه‌های بخش‌های مخفی با ترنسفورم x اولیه، در RTL عرض سند را زیاد می‌کنند */
   overflow-x: clip;
 }
@@ -448,7 +448,7 @@ a.contact-value:hover { color: var(--silver-bright); }
 }
 
 @media (max-width: 767px) {
-  #scroll-container { height: 620vh; }
+  #scroll-container { height: 480vh; }
 
   .site-header { padding: 0 5vw; }
   .site-header nav { display: none; }

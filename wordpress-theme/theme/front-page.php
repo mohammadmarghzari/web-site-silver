@@ -111,34 +111,11 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
   <!-- ۶. کانتینر اسکرول -->
   <div id="scroll-container">
 
-    <!-- تصویر پایه -->
-    <section class="scroll-section section-content align-right" id="sec-base"
-             data-enter="6" data-leave="17" data-animation="clip-reveal">
-      <div class="section-inner">
-        <span class="section-label">۰۰۱ / گالری</span>
-        <h2 class="section-heading">هنرِ نقره‌ی اصفهان</h2>
-        <figure class="section-figure">
-          <img src="<?php echo esc_url( get_site_url( null, '/assets/img/atelier.svg' ) ); ?>" alt="نمایی از کارگاه نقره‌سازی با قوس اصفهانی و حلقه‌های نقره" loading="lazy">
-        </figure>
-        <p class="section-body">هر قطعه از دلِ کارگاه‌های نقره‌سازی اصفهان بیرون می‌آید؛ جایی که سنتِ قلم‌زنی با طراحی امروز پیوند می‌خورد.</p>
-      </div>
-    </section>
-
-    <!-- ویدیو بزرگ + تیتر قوی -->
-    <section class="scroll-section section-content align-left" id="sec-video"
-             data-enter="20" data-leave="31" data-animation="fade-up">
-      <div class="section-inner">
-        <span class="section-label">۰۰۲ / مجموعه</span>
-        <h2 class="section-heading heading-xl">جزئیاتی که<br>می‌درخشند</h2>
-        <p class="section-body">تراشِ دقیق، نگین‌های منتخب و پرداختِ آینه‌ای نقره — نمای نزدیکِ محصول را با اسکرول تماشا کنید.</p>
-      </div>
-    </section>
-
     <!-- محصول ۱: انگشتر مردانه -->
     <section class="scroll-section section-content section-product align-right" id="sec-product-1"
-             data-enter="34" data-leave="43" data-animation="slide-right">
+             data-enter="6" data-leave="18.8" data-animation="slide-right">
       <div class="section-inner">
-        <span class="section-label">۰۰۳ / محصولات</span>
+        <span class="section-label">۰۰۱ / محصولات</span>
         <figure class="product-figure">
           <img src="<?php echo esc_url( $b1['img'] ); ?>" alt="<?php echo esc_attr( $b1['alt'] ); ?>" loading="lazy">
         </figure>
@@ -150,9 +127,9 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
 
     <!-- محصول ۲: انگشتر زنانه -->
     <section class="scroll-section section-content section-product align-left" id="sec-product-2"
-             data-enter="46" data-leave="55" data-animation="slide-left">
+             data-enter="23.1" data-leave="35.9" data-animation="slide-left">
       <div class="section-inner">
-        <span class="section-label">۰۰۴ / محصولات</span>
+        <span class="section-label">۰۰۲ / محصولات</span>
         <figure class="product-figure">
           <img src="<?php echo esc_url( $b2['img'] ); ?>" alt="<?php echo esc_attr( $b2['alt'] ); ?>" loading="lazy">
         </figure>
@@ -164,9 +141,9 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
 
     <!-- محصول ۳: نیم‌ست زنانه -->
     <section class="scroll-section section-content section-product align-right" id="sec-product-3"
-             data-enter="58" data-leave="67" data-animation="scale-up">
+             data-enter="40.2" data-leave="53" data-animation="scale-up">
       <div class="section-inner">
-        <span class="section-label">۰۰۵ / محصولات</span>
+        <span class="section-label">۰۰۳ / محصولات</span>
         <figure class="product-figure">
           <img src="<?php echo esc_url( $b3['img'] ); ?>" alt="<?php echo esc_attr( $b3['alt'] ); ?>" loading="lazy">
         </figure>
@@ -178,7 +155,7 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
 
     <!-- آمار (روکش تیره + شمارنده) -->
     <section class="scroll-section section-stats" id="sec-stats"
-             data-enter="70" data-leave="79" data-animation="stagger-up">
+             data-enter="57.3" data-leave="70.1" data-animation="stagger-up">
       <div class="stats-grid">
         <div class="stat">
           <span class="stat-row"><span class="stat-number" data-value="15" data-decimals="0">۰</span><span class="stat-suffix">+</span></span>
@@ -201,9 +178,9 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
 
     <!-- داستان فروشگاه ما -->
     <section class="scroll-section section-content align-left" id="sec-story"
-             data-enter="81" data-leave="88" data-animation="rotate-in">
+             data-enter="72.9" data-leave="82.9" data-animation="rotate-in">
       <div class="section-inner">
-        <span class="section-label">۰۰۶ / داستان ما</span>
+        <span class="section-label">۰۰۴ / داستان ما</span>
         <h2 class="section-heading">از نقش جهان<br>تا دستان شما</h2>
         <p class="section-body">SilvershopIR از دلِ مجموعه نقش جهان اصفهان آغاز شد؛ با یک باور ساده: نقره‌ی خوب باید هم اصیل باشد، هم در دسترس.</p>
         <p class="section-body">هر انگشتر و نیم‌ستی که عرضه می‌کنیم، از نقره‌ی ۹۲۵ عیار و با وسواس در جزئیات انتخاب یا ساخته می‌شود — همان وسواسی که هنر اصفهان به ما آموخته است.</p>
@@ -213,9 +190,9 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
 
     <!-- فرم مشاوره -->
     <section class="scroll-section section-content align-right" id="sec-form"
-             data-enter="88.5" data-leave="96" data-animation="clip-reveal">
+             data-enter="83.6" data-leave="94.3" data-animation="clip-reveal">
       <div class="section-inner">
-        <span class="section-label">۰۰۷ / مشاوره</span>
+        <span class="section-label">۰۰۵ / مشاوره</span>
         <h2 class="section-heading">مشاوره رایگان</h2>
         <p class="section-body">فرم را پر کنید؛ پیام شما مستقیم در واتساپ فروشگاه باز می‌شود.</p>
         <form id="consult-form" novalidate>
@@ -252,9 +229,9 @@ $b3 = ss_product_block( $p_halfset, get_site_url( null, '/assets/img/halfset.svg
 
     <!-- تماس و آدرس (ماندگار) -->
     <section class="scroll-section section-contact" id="sec-contact"
-             data-enter="96.5" data-leave="100" data-animation="fade-up" data-persist="true">
+             data-enter="95" data-leave="100" data-animation="fade-up" data-persist="true">
       <div class="contact-panel">
-        <span class="section-label">۰۰۸ / تماس با ما</span>
+        <span class="section-label">۰۰۶ / تماس با ما</span>
         <h2 class="section-heading">منتظر شما هستیم</h2>
         <div class="contact-grid">
           <div class="contact-item">
