@@ -33,6 +33,16 @@
 }
 @font-face {
   font-family: 'Vazirmatn';
+  src: url('../assets/fonts/vazirmatn/Vazirmatn-Thin.woff2') format('woff2');
+  font-weight: 100; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('../assets/fonts/vazirmatn/Vazirmatn-ExtraLight.woff2') format('woff2');
+  font-weight: 200; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
   src: url('../assets/fonts/vazirmatn/Vazirmatn-Light.woff2') format('woff2');
   font-weight: 300; font-style: normal; font-display: swap;
 }
@@ -84,7 +94,7 @@ button { font: inherit; color: inherit; }
 
 h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
 
-::selection { background: var(--silver); color: var(--text-inverse); }
+::selection { background: var(--gold); color: var(--text-inverse); }
 
 /* حلقه‌ی فوکوس — همیشه دیده می‌شود و شعاعش با خودِ عنصر هماهنگ است */
 :focus-visible {
@@ -97,7 +107,7 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   position: absolute; inset-inline-start: var(--space-4); top: var(--space-4);
   z-index: calc(var(--z-loader) + 1);
   padding: var(--space-3) var(--space-5);
-  background: var(--silver-bright); color: var(--text-inverse);
+  background: var(--gold); color: var(--text-inverse);
   font-size: var(--fs-small); font-weight: var(--fw-medium);
   transform: translateY(-200%);
   transition: transform var(--dur-2) var(--ease-out);
@@ -146,10 +156,10 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   font-family: var(--font-fa);
   font-size: var(--btn-fs); font-weight: var(--fw-medium);
   line-height: var(--lh-none);
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--tracking-wider);
   color: var(--text-inverse);
-  background: var(--silver-bright);
-  border: 1px solid var(--silver-bright);
+  background: var(--gold);
+  border: 1px solid var(--gold);
   border-radius: var(--radius-control);
   cursor: pointer;
   will-change: transform;
@@ -165,17 +175,19 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
 .cta-button {
   transform: translate3d(var(--mag-x, 0), calc(var(--mag-y, 0px) + var(--lift, 0px)), 0) scale(var(--press, 1));
 }
-.cta-button:hover { --lift: -2px; background: #FFFFFF; border-color: #FFFFFF; box-shadow: var(--shadow-md); }
+.cta-button:hover { --lift: -2px; background: var(--gold-bright); border-color: var(--gold-bright); box-shadow: var(--shadow-md); }
 .cta-button:active { --press: .985; --lift: 0px; transition-duration: var(--dur-1); }
 
+/* گونه‌ی خطی — لبه‌ی نازکِ طلایی روی زمینه‌ی تیره */
 .cta-button.ghost {
-  color: var(--text-primary);
+  color: var(--gold);
   background: transparent;
   border-color: var(--border-default);
   box-shadow: none;
 }
 .cta-button.ghost:hover {
-  background: var(--accent-soft);
+  color: var(--gold-bright);
+  background: var(--gold-softer);
   border-color: var(--border-strong);
   box-shadow: none;
 }
@@ -187,21 +199,27 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
 }
 
 /* ---------- ۴٫۲ برچسبِ بالای تیتر ---------- */
+/* برچسبِ طلاییِ بالای تیتر، با خطِ کوتاهِ محوشونده کنارش */
 .section-label {
-  display: inline-block;
+  display: inline-flex; align-items: center; gap: var(--space-3);
   font-size: var(--fs-micro); font-weight: var(--fw-medium);
   line-height: var(--lh-none);
   letter-spacing: var(--tracking-widest);
-  color: var(--text-tertiary);
+  color: var(--gold);
   margin-bottom: var(--space-5);
+}
+.section-label::after {
+  content: ""; width: var(--space-9); height: 1px;
+  background: var(--rule-gold);
 }
 
 /* ---------- ۴٫۳ تیتر و متن ---------- */
+/* تیترها سبک و باز — ظرافت از نازکیِ قلم می‌آید نه از ضخامتش */
 .section-heading {
   font-size: var(--fs-h2);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-xlight);
   line-height: var(--lh-snug);
-  letter-spacing: var(--tracking-tighter);
+  letter-spacing: var(--tracking-tight);
   color: var(--text-primary);
   margin-bottom: var(--space-5);
   text-wrap: balance;
@@ -280,7 +298,7 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
 .loader-brand .latin {
   font-size: var(--fs-h3);
   line-height: var(--lh-none);
-  color: var(--silver-bright);
+  color: var(--gold-bright);
 }
 .loader-brand .fa {
   font-size: var(--fs-caption);
@@ -294,7 +312,7 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
 }
 #loader-bar {
   width: 0%; height: 100%;
-  background: var(--silver-bright);
+  background: var(--gold);
 }
 #loader-percent {
   font-size: var(--fs-caption);
@@ -311,7 +329,7 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--space-5);
   padding-inline: var(--gutter);
-  background: linear-gradient(180deg, rgba(13, 13, 15, .86), rgba(13, 13, 15, 0));
+  background: linear-gradient(180deg, rgba(11, 10, 9, .88), rgba(11, 10, 9, 0));
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -323,7 +341,7 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
 }
 .logo .latin {
   font-size: var(--fs-body-lg);
-  color: var(--silver-bright);
+  color: var(--gold-bright);
 }
 .logo-sub {
   font-size: var(--fs-micro);
@@ -345,7 +363,7 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   content: "";
   position: absolute; bottom: var(--space-2);
   right: var(--space-3); left: var(--space-3);
-  height: 1px; background: var(--silver);
+  height: 1px; background: var(--gold);
   transform: scaleX(0); transform-origin: right;
   transition: transform var(--dur-3) var(--ease-out);
 }
@@ -390,9 +408,9 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
     border-color var(--dur-2) var(--ease-out);
 }
 .header-cta:hover {
-  background: var(--silver-bright);
+  background: var(--gold);
   color: var(--text-inverse);
-  border-color: var(--silver-bright);
+  border-color: var(--gold);
 }
 .header-cta:active { transform: scale(.98); transition-duration: var(--dur-1); }
 
@@ -407,7 +425,7 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   overflow: hidden;
   background:
     var(--glow-ambient),
-    linear-gradient(180deg, #101012 0%, var(--surface-0) 60%, #0A0A0C 100%);
+    linear-gradient(180deg, #100E0C 0%, var(--surface-0) 58%, #070605 100%);
 }
 .hero-grid {
   display: grid;
@@ -462,11 +480,12 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   line-height: var(--lh-none);
   color: var(--text-tertiary);
 }
+/* مقدارها طلایی‌اند، هم‌زبان با مشخصاتِ کارت‌های محصول */
 .spec-v {
   font-size: var(--fs-body-lg);
   font-weight: var(--fw-medium);
   line-height: var(--lh-none);
-  color: var(--text-primary);
+  color: var(--gold);
 }
 
 .hero-actions {
@@ -537,17 +556,17 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   position: absolute; inset: 0;
   background:
     linear-gradient(90deg,
-      rgba(6, 6, 8, .88) 0%, rgba(6, 6, 8, .5) 22%,
+      rgba(6, 5, 4, .9) 0%, rgba(6, 5, 4, .52) 22%,
       transparent 44%, transparent 56%,
-      rgba(6, 6, 8, .5) 78%, rgba(6, 6, 8, .88) 100%),
+      rgba(6, 5, 4, .52) 78%, rgba(6, 5, 4, .9) 100%),
     linear-gradient(180deg,
-      rgba(6, 6, 8, .5) 0%, transparent 16%,
-      transparent 78%, rgba(6, 6, 8, .68) 100%);
+      rgba(6, 5, 4, .52) 0%, transparent 16%,
+      transparent 78%, rgba(6, 5, 4, .7) 100%);
 }
 
 #dark-overlay {
   position: fixed; inset: 0; z-index: var(--z-overlay);
-  background: rgba(8, 8, 10, .9);
+  background: rgba(6, 5, 4, .92);
   opacity: 0; pointer-events: none;
 }
 
@@ -607,10 +626,10 @@ h1, h2, h3 { font-weight: var(--fw-bold); line-height: var(--lh-snug); }
 }
 .stat-number {
   font-size: var(--fs-numeral);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-thin);
   line-height: var(--lh-none);
   letter-spacing: var(--tracking-tighter);
-  color: var(--silver-bright);
+  color: var(--gold-bright);
   font-variant-numeric: tabular-nums;
 }
 .stat-suffix {
@@ -675,7 +694,7 @@ a.contact-value {
   min-height: 2.75rem;
   transition: color var(--dur-2) var(--ease-out);
 }
-a.contact-value:hover { color: var(--silver-bright); }
+a.contact-value:hover { color: var(--gold-bright); }
 
 .site-footer {
   display: flex; justify-content: space-between; flex-wrap: wrap;
@@ -701,11 +720,28 @@ a.contact-value:hover { color: var(--silver-bright); }
 .gallery-section, .hero-standalone { scroll-margin-top: calc(var(--header-h) + var(--space-5)); }
 
 .gallery-inner { max-width: var(--container-md); margin-inline: auto; }
-.gallery-section .section-heading { margin-bottom: var(--space-4); }
+
+/* سرصفحه‌ی گالری وسط‌چین است تا شبکه‌ی طاق‌ها زیرش متقارن بنشیند */
+.gallery-section .gallery-inner > .section-label,
+.gallery-section .gallery-inner > .section-heading,
+.gallery-section .gallery-inner > .gallery-intro { text-align: center; }
+.gallery-section .gallery-inner > .section-label {
+  display: flex; justify-content: center;
+  width: 100%;
+}
+/* در حالت وسط‌چین، خطِ محوشونده باید هر دو طرفِ برچسب باشد */
+.gallery-section .gallery-inner > .section-label::before {
+  content: ""; width: var(--space-9); height: 1px;
+  background: var(--rule-gold);
+}
+.gallery-section .section-heading {
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-h1);
+}
 .gallery-intro {
   max-width: var(--container-prose);
-  margin-bottom: var(--space-9);
-  font-size: var(--fs-body-lg);
+  margin: 0 auto var(--space-10);
+  font-size: var(--fs-body);
   line-height: var(--lh-relaxed);
   color: var(--text-secondary);
   text-wrap: pretty;
@@ -718,36 +754,36 @@ a.contact-value:hover { color: var(--silver-bright); }
   gap: var(--space-6);
 }
 
+/* کارت بدونِ جعبه — خودِ قابِ طاقی مرزِ بصری است، نه یک مستطیلِ دورِ همه‌چیز */
 .pcard {
   display: flex; flex-direction: column;
-  background: var(--surface-2);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
+  background: transparent;
+  border: 0;
   will-change: transform;
+  transition: transform var(--dur-4) var(--ease-out);
+}
+.pcard:hover { transform: translateY(-4px); }
+
+/* قابِ طاقی — امضای بصریِ صفحه */
+.pcard-media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-arch);
+  overflow: hidden;
   transition:
-    transform var(--dur-4) var(--ease-out),
     border-color var(--dur-4) var(--ease-out),
     box-shadow var(--dur-4) var(--ease-out);
 }
-.pcard:hover {
-  transform: translateY(-4px);
+.pcard:hover .pcard-media {
   border-color: var(--border-strong);
   box-shadow: var(--shadow-lg);
 }
 
-.pcard-media {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  background: var(--surface-1);
-  overflow: hidden;
-}
-/* نیم‌ست‌ها عکسِ عمودی دارند: از گوشواره تا آویز باید در کادر بماند */
-.gallery-halfset .pcard-media { aspect-ratio: 3 / 4; }
-
 button.pcard-media {
   display: block; width: 100%; padding: 0;
-  border: 0; cursor: zoom-in;
+  cursor: zoom-in;
 }
 /* عمقِ تصویر: بزرگ‌نماییِ هاور و جابه‌جاییِ ریزِ دنبال‌کننده‌ی نشانگر با هم ترکیب
    می‌شوند. جابه‌جایی را JS روی متغیرها می‌نویسد تا ترنسفورم یکی بماند. */
@@ -768,7 +804,7 @@ button.pcard-media {
   font-size: var(--fs-micro);
   letter-spacing: var(--tracking-wide);
   color: var(--text-primary);
-  background: rgba(13, 13, 15, .72);
+  background: rgba(11, 10, 9, .76);
   border: 1px solid var(--border-default);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -781,44 +817,46 @@ button.pcard-media {
 button.pcard-media:focus-visible .pcard-zoom { opacity: 1; transform: translateY(0); }
 @media (hover: none) { .pcard-zoom { opacity: 1; transform: none; } }
 
+/* زیرِ قاب: نام، مشخصاتِ فشرده و دکمه — همه وسط‌چین، مثل برچسبِ ویترین */
 .pcard-body {
-  display: flex; flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-6);
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-2) 0;
   flex: 1;
+  text-align: center;
 }
 .pcard-title {
   font-size: var(--fs-title);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-light);
   line-height: var(--lh-snug);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: var(--tracking-wide);
   color: var(--text-primary);
 }
-.pcard-specs { display: flex; flex-direction: column; gap: var(--space-3); }
+/* مشخصات: هر مورد یک سطرِ وسط‌چین — عنوانِ ریزِ خاکستری، مقدارِ طلایی */
+.pcard-specs {
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-1);
+}
 .pcard-specs .spec {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: var(--space-4);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--border-subtle);
+  display: inline-flex; align-items: baseline;
+  gap: var(--space-2);
 }
 .pcard-specs dt {
-  font-size: var(--fs-caption);
+  font-size: var(--fs-micro);
   line-height: var(--lh-normal);
+  letter-spacing: var(--tracking-wide);
   color: var(--text-tertiary);
-  white-space: nowrap;
 }
 .pcard-specs dd {
-  font-size: var(--fs-small); font-weight: var(--fw-medium);
+  font-size: var(--fs-caption); font-weight: var(--fw-medium);
   line-height: var(--lh-normal);
-  color: var(--silver);
-  text-align: left;
+  color: var(--gold);
 }
 .pcard-cta {
   --btn-py: var(--space-3);
-  --btn-px: var(--space-5);
+  --btn-px: var(--space-6);
   --btn-min-h: 2.75rem;
   margin-top: auto;
-  width: 100%;
 }
 
 /* ============================================================
@@ -902,7 +940,7 @@ button.pcard-media:focus-visible .pcard-zoom { opacity: 1; transform: translateY
   width: 2.75rem; height: 2.75rem;
   display: inline-flex; align-items: center; justify-content: center;
   color: var(--text-primary);
-  background: rgba(13, 13, 15, .7);
+  background: rgba(11, 10, 9, .74);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-control);
   cursor: pointer;
@@ -911,7 +949,7 @@ button.pcard-media:focus-visible .pcard-zoom { opacity: 1; transform: translateY
     background var(--dur-2) var(--ease-out),
     border-color var(--dur-2) var(--ease-out);
 }
-.lightbox-nav:hover { background: rgba(13, 13, 15, .92); border-color: var(--border-strong); }
+.lightbox-nav:hover { background: rgba(11, 10, 9, .94); border-color: var(--border-strong); }
 .lightbox-prev { inset-inline-end: var(--space-3); }
 .lightbox-next { inset-inline-start: var(--space-3); }
 
@@ -924,7 +962,7 @@ button.pcard-media:focus-visible .pcard-zoom { opacity: 1; transform: translateY
   transition: background var(--dur-3) var(--ease-out);
 }
 .lightbox-dots button:hover { background: var(--border-strong); }
-.lightbox-dots button[aria-current="true"] { background: var(--silver-bright); }
+.lightbox-dots button[aria-current="true"] { background: var(--gold); }
 
 /* ============================================================
    ۱۲. ظاهرشدنِ تدریجی هنگام اسکرول (بخش‌های عادیِ صفحه)
@@ -999,16 +1037,12 @@ button.pcard-media:focus-visible .pcard-zoom { opacity: 1; transform: translateY
   .site-footer { justify-content: center; text-align: center; }
 }
 
+/* روی موبایل هر طاق تمامِ عرض را می‌گیرد — دو ستون، هم عکس و هم متن را خفه می‌کرد */
 @media (max-width: 599px) {
-  .pcard-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
-  .pcard-body { padding: var(--space-4); gap: var(--space-4); }
-  .pcard-title { font-size: var(--fs-body-lg); }
-  .pcard-specs { gap: var(--space-2); }
+  .pcard-grid { grid-template-columns: 1fr; gap: var(--space-9); }
+  .pcard-media { max-width: 22rem; margin-inline: auto; width: 100%; }
+  .pcard-body { padding-top: var(--space-4); gap: var(--space-3); }
   .gallery-intro { margin-bottom: var(--space-7); }
-}
-
-@media (max-width: 389px) {
-  .pcard-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================================

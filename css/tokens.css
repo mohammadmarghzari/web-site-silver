@@ -7,30 +7,38 @@
 :root {
   /* --------------------------------------------------------
      ۱. سطوح و رنگ
-     تکِ‌رنگِ ذغالی. اکسنت = سفیدِ گرم؛ خودِ نقره تنها رنگِ صفحه است.
+     مشکیِ گرم با اکسنتِ طلایی. طلا فقط برای لبه، برچسب و قیمت —
+     هرگز برای سطحِ بزرگ. نقره‌ی خودِ محصول باید تنها درخششِ صفحه بماند.
      -------------------------------------------------------- */
-  --surface-0: #0D0D0F;                     /* پس‌زمینه‌ی صفحه */
-  --surface-1: #131316;                     /* سطحِ برجسته */
-  --surface-2: #191A1D;                     /* کارت */
-  --surface-3: #212226;                     /* کارت در حالت هاور */
-  --surface-glass: rgba(19, 19, 22, .72);   /* پنل‌های شیشه‌ای */
-  --surface-scrim: rgba(9, 9, 11, .88);     /* پشتِ لایت‌باکس */
-  --surface-inverse: #F2F1EE;               /* بومِ روشن برای عکسِ محصول */
+  --surface-0: #0B0A09;                     /* پس‌زمینه‌ی صفحه — مشکیِ گرم */
+  --surface-1: #100E0C;                     /* سطحِ برجسته */
+  --surface-2: #151210;                     /* کارت */
+  --surface-3: #1D1815;                     /* کارت در حالت هاور */
+  --surface-glass: rgba(16, 14, 12, .74);   /* پنل‌های شیشه‌ای */
+  --surface-scrim: rgba(6, 5, 4, .90);      /* پشتِ لایت‌باکس */
+  --surface-inverse: #F2EFE9;               /* بومِ روشن برای عکسِ محصول */
 
-  --text-primary: #F1F1EF;
-  --text-secondary: #A5A5A1;                /* ۷٫۴:۱ روی surface-0 */
-  --text-tertiary: #8F8F8C;                 /* ۶٫۰:۱ — فقط برای متنِ ≥۱۴px */
-  --text-inverse: #0D0D0F;
+  --text-primary: #F3EFE7;
+  --text-secondary: #ABA396;                /* ۷٫۱:۱ روی surface-0 */
+  --text-tertiary: #8E8578;                 /* ۵٫۲:۱ — فقط برای متنِ ≥۱۴px */
+  --text-inverse: #0B0A09;
+
+  /* طلا — سلسله‌مراتبِ سه‌پله */
+  --gold: #C6A667;
+  --gold-bright: #E4CD97;
+  --gold-dim: #8A7346;
+  --gold-soft: rgba(198, 166, 103, .12);
+  --gold-softer: rgba(198, 166, 103, .06);
 
   --silver: #C9CCD1;
   --silver-bright: #EDEDEB;
-  --accent: #EDEDEB;
-  --accent-soft: rgba(237, 237, 235, .10);
-  --accent-softer: rgba(237, 237, 235, .05);
+  --accent: var(--gold);
+  --accent-soft: var(--gold-soft);
+  --accent-softer: var(--gold-softer);
 
-  --border-subtle: rgba(237, 237, 235, .08);
-  --border-default: rgba(237, 237, 235, .14);
-  --border-strong: rgba(237, 237, 235, .28);
+  --border-subtle: rgba(198, 166, 103, .14);
+  --border-default: rgba(198, 166, 103, .28);
+  --border-strong: rgba(198, 166, 103, .52);
 
   --danger: #C4574F;
 
@@ -69,6 +77,8 @@
   --tracking-wider: 0.14em;
   --tracking-widest: 0.28em;
 
+  --fw-thin: 100;        /* فقط برای تیترهای بزرگ */
+  --fw-xlight: 200;
   --fw-light: 300;
   --fw-regular: 400;
   --fw-medium: 500;
@@ -116,6 +126,8 @@
   --radius-md: 3px;
   --radius-control: 0;      /* دکمه‌ها لبه‌تیز می‌مانند */
   --radius-full: 999px;
+  /* طاق — امضای بصریِ صفحه: قابِ محصول مثل طاقِ اصفهانی از بالا گرد می‌شود */
+  --radius-arch: 50% 50% var(--radius-sm) var(--radius-sm) / 32% 32% var(--radius-sm) var(--radius-sm);
 
   /* --------------------------------------------------------
      ۶. سایه — در تمِ تیره، عمق از تاریکیِ عمیق می‌آید نه از خاکستری
@@ -125,18 +137,27 @@
   --shadow-lg: 0 20px 48px -16px rgba(0, 0, 0, .7);
   --shadow-xl: 0 32px 80px -24px rgba(0, 0, 0, .8);
   --shadow-product: 0 26px 40px -12px rgba(0, 0, 0, .62);
-  --shadow-inset-top: inset 0 1px 0 rgba(237, 237, 235, .06);
+  --shadow-inset-top: inset 0 1px 0 rgba(198, 166, 103, .10);
+  --shadow-gold: 0 0 0 1px rgba(198, 166, 103, .28), 0 18px 40px -20px rgba(0, 0, 0, .8);
 
   /* هاله‌ی نرمِ نور — حسِ «نورِ ویترین» */
-  --glow-ambient: radial-gradient(ellipse 60% 50% at 26% 60%, rgba(237, 237, 235, .05), transparent 65%);
+  --glow-ambient: radial-gradient(ellipse 60% 50% at 26% 60%, rgba(198, 166, 103, .07), transparent 65%);
 
-  /* خطِ درخشان — امضای بصریِ صفحه.
-     بازتابِ نور روی لبه‌ی نقره‌ی صیقلی: از لبه‌ی خواندن روشن می‌شود و محو می‌شود. */
+  /* خطِ طلاییِ محوشونده — از دو سرِ محور کم‌رنگ و در میانه روشن.
+     زیرِ برچسبِ بخش‌ها و به‌عنوان جداکننده به کار می‌رود. */
+  --rule-gold: linear-gradient(
+    to left,
+    transparent 0%,
+    rgba(198, 166, 103, .45) 30%,
+    rgba(198, 166, 103, .45) 70%,
+    transparent 100%
+  );
+  /* خطِ درخشان — بازتابِ نور روی لبه‌ی فلزِ صیقلی، از سمتِ خواندن */
   --rule-specular: linear-gradient(
     to left,
-    rgba(237, 237, 235, .42) 0%,
-    rgba(237, 237, 235, .16) 12%,
-    rgba(237, 237, 235, .07) 38%,
+    rgba(198, 166, 103, .55) 0%,
+    rgba(198, 166, 103, .22) 14%,
+    rgba(198, 166, 103, .08) 40%,
     transparent 100%
   );
 
